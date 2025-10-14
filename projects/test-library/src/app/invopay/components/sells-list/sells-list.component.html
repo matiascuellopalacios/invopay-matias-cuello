@@ -1,0 +1,145 @@
+
+<div class="sales-list">
+  <div class="sales-list__card">
+    <!-- Title Section -->
+    <div class="sales-list__title-section">
+      <h1 class="sales-list__title">{{ 'IP.SELLS_LIST.TITLE' | translate }}</h1>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="sales-list__filters">
+      <div class="sales-list__filters-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" class="sales-list__filter-icon" viewBox="0 0 16 16">
+          <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" fill="#0071CE"/>
+        </svg>
+        <h2 class="sales-list__filters-subtitle">{{ 'IP.SELLS_LIST.FILTERS.TITLE' | translate }}</h2>
+      </div>
+      
+      <div class="sales-list__filters-container">
+       <div class="sales-list__filter-group">
+  <label for="fecha-desde" class="sales-list__filter-label">{{ 'IP.SELLS_LIST.FILTERS.DATE_FROM' | translate }}</label>
+  <input 
+    type="date" 
+    id="fecha-desde" 
+    class="sales-list__filter-input" 
+    [(ngModel)]="fechaDesde"
+    [max]="maxDate"
+    (change)="onFechaDesdeChange($event)"
+    [placeholder]="'IP.SELLS_LIST.FILTERS.SELECT_DATE' | translate"/>
+</div>
+
+<div class="sales-list__filter-group">
+  <label for="fecha-hasta" class="sales-list__filter-label">{{ 'IP.SELLS_LIST.FILTERS.DATE_TO' | translate }}</label>
+  <input 
+    type="date" 
+    id="fecha-hasta" 
+    class="sales-list__filter-input" 
+    [(ngModel)]="fechaHasta"
+    [min]="minDateHasta"
+    [max]="maxDate"
+    (change)="onFechaHastaChange($event)"
+    [placeholder]="'IP.SELLS_LIST.FILTERS.SELECT_DATE' | translate"/>
+</div>
+        
+        <div class="sales-list__filter-actions">
+          <button class="btn btn--search" (click)="onSearch()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="btn btn--search" (click)="openFilters()">
+            <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
+          </button>
+          <button class="btn btn--delete" (click)="onClearFilters()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4m2 0v9.333a1.333 1.333 0 0 1-1.334 1.334H4.667a1.333 1.333 0 0 1-1.334-1.334V4h9.334z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="sales-list__table-container">
+      <div class="sales-list__body">
+        <div>
+          <app-table
+            *ngIf="titlesFile && titlesFile.size > 0 && paginatedData && paginatedData.length > 0"
+            [data]="paginatedData"
+            [initTable]="false"
+            [propertyOrder]="columns"
+            [titlesFile]="titlesFile"
+            keyTranslate=""
+            [scroll]="true"
+            [tableStyle]="tableStyle">
+            
+          </app-table>
+          
+          <app-no-data 
+            *ngIf="titlesFile && titlesFile.size > 0 && (!paginatedData || paginatedData.length === 0)">
+          </app-no-data>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paginator Section -->
+    <div class="sales-list__paginator-container">
+      <div class="sales-list__rows-per-page">
+        <span>Filas por páginas:</span>
+        <select class="sales-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
+          <option [value]="10">10</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+        </select>
+      </div>
+      
+       <app-paginator 
+    *ngIf="showPaginator"
+    class="sales-list__paginator"
+    [totalItems]="totalItems"
+    [itemsPerPage]="itemsPerPage"
+    [currentPages]="currentPages"
+    (pageChange)="onPageChange($event)">
+  </app-paginator>
+    </div>
+  </div>
+</div>
+<!-- Modal para filtros -->
+<div class="sales-list__filters-modal" *ngIf="showFiltersModal">
+  <div class="sales-list__filters-modal-content">
+
+    <h3>{{ 'IP.SELLS_LIST.MODAL.TITTLE' | translate }}</h3>
+
+    <!-- Fila de Producto y Broker -->
+    <div class="filters-row-modal">
+      <div class="filter-group-modal">
+        <label for="producto-modal">{{ 'IP.SELLS_LIST.FILTERS.PRODUCT' | translate }}</label>
+        <select id="producto-modal" [(ngModel)]="selectedProduct">
+          <option value="">{{ 'IP.SELLS_LIST.FILTERS.PRODUCTS_PLACEHOLDER' | translate }}</option>
+          <option value="Seguro de Vida Total">{{ 'IP.SELLS_LIST.PRODUCTS.HEALTH_INSURANCE' | translate }}</option>
+          <option value="Seguro de Hogar Premium">{{ 'IP.SELLS_LIST.PRODUCTS.HOME_INSURANCE' | translate }}</option>
+          <option value="Seguro Automotor Plus">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
+          <option value="Seguro de Accidentes Personales">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group-modal">
+        <label for="broker-modal">{{ 'IP.SELLS_LIST.FILTERS.BROKER' | translate }}</label>
+        <select id="broker-modal" [(ngModel)]="selectedBroker">
+          <option value="">{{ 'IP.SELLS_LIST.FILTERS.BROKERS_PLACEHOLDER' | translate }}</option>
+          <option value="juan-perez">{{ 'IP.SELLS_LIST.BROKERS.JUAN_PEREZ' | translate }}</option>
+          <option value="Sofía Gómez">{{ 'IP.SELLS_LIST.BROKERS.SOFIA_GOMEZ' | translate }}</option>
+          <option value="María Rodríguez">{{ 'IP.SELLS_LIST.BROKERS.MARIA_RODRIGUEZ' | translate }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="filter-actions-modal">
+      <button class="btn btn--cancel" (click)="closeFilters()">{{ 'IP.SELLS_LIST.MODAL.CANCEL' | translate }}</button>
+      <button class="btn btn--apply" (click)="applyModalFilters()">{{ 'IP.SELLS_LIST.MODAL.APPLY' | translate }}</button>
+    </div>
+
+  </div>
+</div>

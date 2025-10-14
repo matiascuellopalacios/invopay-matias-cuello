@@ -1,0 +1,145 @@
+<div class="sale-detail">
+  <div class="sale-detail__container">
+    <!-- Header con título y botón volver -->
+    <div class="sale-detail__header">
+      <button class="sale-detail__back-btn" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+      </button>
+      <h1 class="sale-detail__title">{{ 'IP.SELL_DETAIL.TITLE' | translate }}</h1>
+    </div>
+
+    <!-- Información General -->
+    <div class="sale-detail__info-section">
+      <div class="sale-detail__info-row">
+        <!-- Columna Izquierda -->
+        <div class="sale-detail__info-card">
+          <h2 class="sale-detail__info-title">
+           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+          </svg>
+            {{ 'IP.SELL_DETAIL.GENERAL_INFO' | translate }}
+          </h2>
+          
+          <div class="sale-detail__info-grid">
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.SALE_DATE' | translate }}</span>
+              <span class="sale-detail__info-value">{{ saleDetail?.saleDate||'-' |customDate}}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.POLICY_VALUE' | translate }}</span>
+              <span class="sale-detail__info-value">{{ saleDetail?.policyData.amount||'-'}}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.COMMISSION_VALUE' | translate }}</span>
+              <span class="sale-detail__info-value">{{ saleDetail?.amount|| '-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PRODUCT' | translate }}</span>
+              <span class="sale-detail__info-value">{{ saleDetail?.productName|| '-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PREMIUM_VALUE' | translate }}</span>
+              <span class="sale-detail__info-value">{{  saleDetail?.policyData.premiumAmount||'-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PAYMENT_FREQUENCY' | translate }}</span>
+              <span class="sale-detail__info-value">{{getPaymentFrequencyKey()||  '-' |translate}}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.POLICY_NUMBER' | translate }}</span>
+              <span class="sale-detail__info-value">{{ saleDetail?.policyData.number||'-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.BROKER_COMMISSION' | translate }}</span>
+              <span class="sale-detail__info-value">{{'%'+ caluclatePolicyPercentage()||'-' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="sale-detail__info-card">
+          <h2 class="sale-detail__info-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
+            </svg>
+            {{ 'IP.SELL_DETAIL.CUSTOMER_INFO' | translate }}
+          </h2>
+          
+          <div class="sale-detail__info-grid sale-detail__info-grid--single">
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.NAME' | translate }}</span>
+              <span class="sale-detail__info-value">{{saleDetail?.customer.fullName||'-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.EMAIL' | translate }}</span>
+              <span class="sale-detail__info-value">{{saleDetail?.customer.email||'-' }}</span>
+            </div>
+            
+            <div class="sale-detail__info-item">
+              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PHONE' | translate }}</span>
+              <span class="sale-detail__info-value">{{saleDetail?.customer.phoneNumber||'-' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan de Pago de la Prima -->
+    <div class="sale-detail__payment-section">
+      <h2 class="sale-detail__payment-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+          </svg>
+        {{ 'IP.SELL_DETAIL.TABLE.TITTLE' | translate }}
+      </h2>
+      
+      <div class="sale-detail__table-wrapper">
+        <app-table
+          *ngIf="titlesFile && titlesFile.size > 0 && paginatedData && paginatedData.length > 0"
+          [data]="paginatedData"
+          [initTable]="false"
+          [propertyOrder]="columns"
+          [titlesFile]="titlesFile"
+          keyTranslate=""
+          [tableStyle]="tableStyle">
+        </app-table>
+        
+        <app-no-data 
+          *ngIf="titlesFile && titlesFile.size > 0 && (!paginatedData || paginatedData.length === 0)">
+        </app-no-data>
+      </div>
+    </div>
+    <!-- Paginador -->
+      <div class="sale-detail__paginator-container">
+        <div class="sale-detail__rows-per-page">
+          <span>{{ 'IP.SELL_DETAIL.ROWS_PER_PAGE' | translate }}</span>
+          <select class="sale-detail__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+        </div>
+        
+        <app-paginator 
+          *ngIf="showPaginator"
+          class="sale-detail__paginator"
+          [totalItems]="totalItems"
+          [itemsPerPage]="itemsPerPage"
+          [currentPages]="currentPages"
+          (pageChange)="onPageChange($event)">
+        </app-paginator>
+      </div>
+  </div>
+</div>

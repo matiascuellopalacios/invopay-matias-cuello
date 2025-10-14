@@ -1,0 +1,40 @@
+@import "../../../base/src/shared/mixins/generalText.scss";
+@import "../../../base/src/shared/mixins/sizes.scss";
+@import "../../../base/src/shared/mixins/utils.scss";
+@import "../../../base/src/shared/mixins/variables/app-base.scss";
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background: #F5F5F5;
+}
+
+.main-content {
+  margin-left: 190px;
+  padding: 60px 10px 10px 60px;
+  min-height: 100vh;
+  height: 100%;
+  background: #F5F5F5;
+  transition: margin-left 0.3s ease;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  &.sidebar-collapsed {
+    margin-left: 60px;
+    padding-left: 2px; 
+    padding-right: 3px; 
+  }
+}
+
+
+::ng-deep {
+  router-outlet {
+    display: none;
+  }
+
+  router-outlet + * {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+  }
+}

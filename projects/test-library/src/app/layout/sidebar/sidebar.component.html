@@ -1,0 +1,68 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+
+  <div class="section">
+    <div class="menu-items">
+      <a class="menu-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" title="Inicio">
+        <img src="../../../assets/new-styles/icons/sidebar/home-icon.svg" alt="Inicio">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Inicio</span>
+      </a>
+        <a class="menu-item" routerLink="/sell-list" routerLinkActive="active" title="Ventas">
+        <img src="../../../assets/icons/sell.svg" alt="Ventas">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Ventas</span>
+      </a>
+       <div class="menu-item-group">
+        <div class="menu-item has-submenu" [class.open]="revenueSubmenuOpen" (click)="toggleRevenueSubmenu()" title="Recaudaciones">
+          <img src="../../../assets/icons/pay_in.svg" alt="Recaudaciones">
+          <span class="label" *ngIf="!isCollapsed" style="color:#0071CE;">Recaudaciones (Pay in)</span>
+          <span class="arrow" *ngIf="!isCollapsed">▼</span>
+        </div>
+        
+        <div class="submenu" *ngIf="revenueSubmenuOpen && !isCollapsed">
+          <a class="menu-item" routerLink="/revenue-list" routerLinkActive="active" title="Listado">
+            <span class="label">Listado</span>
+          </a>
+          <a class="menu-item" routerLink="/payments-entities" routerLinkActive="active" title="Proveedores">
+            <span class="label">Proveedores</span>
+          </a>
+        </div>
+      </div>
+
+      <a class="menu-item" routerLink="/comisiones" routerLinkActive="active" title="Comisiones">
+        <img src="../../../assets/icons/finances-icon.svg" alt="Comisiones">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Comisiones</span>
+      </a>
+
+      <a class="menu-item" routerLink="/liquidaciones" routerLinkActive="active" title="Liquidaciones">
+        <img src="../../../assets/icons/payments.svg" alt="Liquidaciones">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Liquidaciones</span>
+      </a>
+
+      <a class="menu-item" routerLink="/pagos" routerLinkActive="active" title="Pagos">
+        <img src="../../../assets/icons/pay_out.svg" alt="Pagos">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Pagos (Pay out)</span>
+      </a>
+
+      <a class="menu-item" routerLink="/cobranza" routerLinkActive="active" title="Cobranza">
+        <img src="../../../assets/icons/book_collection.svg" alt="Cobranza">
+        <span class="label" *ngIf="!isCollapsed" style="color:#0071CE;">Cobranza</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="divider" *ngIf="!isCollapsed"></div>
+
+  <div class="section">
+    <div class="menu-items">
+      <a class="menu-item" routerLink="/configuraciones" routerLinkActive="active" title="Configuraciones">
+        <img src="../../../assets/icons/management-icon.svg" alt="Configuraciones">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Configuraciones</span>
+      </a>
+      <div class="divider" *ngIf="!isCollapsed"></div>
+      <a class="menu-item" routerLink="/rendiciones" routerLinkActive="active" title="Rendiciones">
+        <img src="../../../assets/icons/group_people.svg" alt="Rendiciones">
+        <span class="label" *ngIf="!isCollapsed"style="color:#0071CE;">Rendiciones</span>
+      </a>
+      <div class="divider" *ngIf="!isCollapsed"></div>
+    </div>
+  </div>
+</aside>
