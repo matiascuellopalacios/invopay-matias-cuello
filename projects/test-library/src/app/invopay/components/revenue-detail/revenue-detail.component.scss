@@ -7,6 +7,11 @@
   min-height: calc(100vh - 45px);
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
   &__container {
     max-width: 1400px;
@@ -246,11 +251,17 @@
     }
 
     &__info-card {
-      padding: 20px;
+      padding: 16px;
+      width: 100% !important;
+      max-width: 100% !important;
+      display: block;
+      margin: 0;
     }
 
     &__payment-section {
-      padding: 20px;
+      padding: 16px;
+      width: 100% !important;
+      max-width: 100% !important;
     }
 
     &__paginator-container {
@@ -266,6 +277,15 @@
     &__paginator {
       width: 100%;
       justify-content: center;
+    }
+
+    &__info-row {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    &__info-grid {
+      grid-template-columns: 1fr;
     }
   }
 }

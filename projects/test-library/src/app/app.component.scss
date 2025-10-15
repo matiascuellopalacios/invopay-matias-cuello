@@ -33,6 +33,18 @@
   }
 }
 
+// Mobile: do not reserve space for the sidebar; let it overlay.
+@include sm {
+  .main-content {
+    margin-left: 0 !important;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &.sidebar-collapsed {
+      margin-left: 60px !important; 
+    }
+  }
+}
 
 ::ng-deep {
   router-outlet {
