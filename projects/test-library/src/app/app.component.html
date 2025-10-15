@@ -1,5 +1,6 @@
-<app-navbar (toggleSidebarEvent)="toggleSidebar()"></app-navbar>
-<app-sidebar [isCollapsed]="isSidebarCollapsed"></app-sidebar>
-<main class="main-content" [class.sidebar-collapsed]="isSidebarCollapsed">
+<app-navbar *ngIf="!hideChrome" (toggleSidebarEvent)="toggleSidebar()"></app-navbar>
+<app-sidebar *ngIf="!hideChrome" [isCollapsed]="isSidebarCollapsed"></app-sidebar>
+<main class="main-content" [class.sidebar-collapsed]="!hideChrome && isSidebarCollapsed" [class.no-chrome]="hideChrome">
   <router-outlet></router-outlet>
+  
 </main>

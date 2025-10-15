@@ -12,6 +12,11 @@ import { PaymentsEntitiesListComponent } from './invopay/components/payments-ent
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    component: IpLoginComponent,
+  },
+  {
     path: 'home',
     component: HomeComponent,
   },
@@ -53,6 +58,10 @@ const routes: Routes = [
   {
     path:'payments-entities',
     component:PaymentsEntitiesListComponent
+  },
+  {
+    path: '**',
+    redirectTo: '',
   }
 
 ];
