@@ -185,3 +185,9 @@
   color: #2563EB;
 }
 }
+
+@include sm {
+  .sidebar.collapsed {
+    display: none;
+  }
+}
