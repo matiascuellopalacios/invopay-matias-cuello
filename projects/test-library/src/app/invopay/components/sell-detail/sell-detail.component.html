@@ -120,7 +120,7 @@
       </div>
     </div>
     <!-- Paginador -->
-      <div class="sale-detail__paginator-container">
+      <div class="sale-detail__paginator-container" *ngIf="paginatedData && paginatedData.length > 0">
         <div class="sale-detail__rows-per-page">
           <span>{{ 'IP.SELL_DETAIL.ROWS_PER_PAGE' | translate }}</span>
           <select class="sale-detail__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">

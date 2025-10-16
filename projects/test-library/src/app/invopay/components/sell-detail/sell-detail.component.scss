@@ -217,9 +217,8 @@
 
   &__paginator {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    padding-right: 38%;
     
     ::ng-deep .ip-paginator {
       padding: 0 !important;

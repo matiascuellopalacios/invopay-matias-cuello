@@ -22,14 +22,11 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     this.loadProviders();
   }
   ngAfterViewChecked(): void {
-    this.renderIcons();
     this.renderLogos();
   }
   
   ngAfterViewInit(): void {
-    this.renderIcons();
     this.renderLogos();
-    this.setupIconClick();
   }
   data: any[] = [];
   originalData: any[] = [];
@@ -38,9 +35,10 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     'nombreProveedor',
     'canal',
     'activo',
-    'descripcion',
-    'detalle'
+    'descripcion'
   ];
+  
+  actions = ['detail'];
   
   titlesFile = new Map<string, string>();
   tableStyle = 'invopay';
@@ -70,7 +68,6 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
             canal: prov.paymentChannels,
             activo: this.isActive(prov.isActive),
             descripcion: prov.description,
-            detalle: 'Ver',
             _rawData: prov
             };
           });  
@@ -106,22 +103,11 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     this.updatePaginatedData();
   }
 
-  private renderIcons() {
-    const cells = document.querySelectorAll('td'); 
-    cells.forEach(cell => {
-      if (cell.textContent?.trim() === 'Ver') {
-        cell.innerHTML = `
-          <button class="btn-eye" title="Ver detalle">
-            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'
-                 fill='currentColor' class='bi bi-eye-fill'
-                 viewBox='0 0 16 16'>
-              <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0'/>
-              <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8
-                       m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7'/>
-            </svg>
-          </button>`;
-      }
-    });
+  onTableAction(event: any): void {
+    const { event: action, dataField } = event;
+    if (action === 'detail') {
+      console.log('Ver detalle:', dataField);
+    }
   }
 
  private renderLogos() {
@@ -138,17 +124,16 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
         const logoUrl = rowData._rawData.logoUrl;
         const name = rowData._rawData.name;
         cell.innerHTML = '';
-        if (logoUrl) {
-          const img = document.createElement('img');
-          img.src = logoUrl;
-          img.alt = name;
-          img.className = 'provider-logo';
-          img.onerror = () => {
-            cell.innerHTML = '';
-          };
-          
-          cell.appendChild(img);
-        }
+        
+        const img = document.createElement('img');
+        img.src = logoUrl || '../../../assets/img/mercado-pago.jpeg';
+        img.alt = name;
+        img.className = 'provider-logo';
+        img.onerror = () => {
+          img.src = '../../../assets/img/mercado-pago.jpeg';
+        };
+        
+        cell.appendChild(img);
       }
     }
   });
@@ -172,23 +157,9 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
       ['nombreProveedor', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PROVIDEER')],
       ['canal', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL')],
       ['activo', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE')],
-      ['descripcion', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION')],
-      ['detalle', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DETAIL')]
+      ['descripcion', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION')]
     ]);
     this.cdr.detectChanges();
-  }
-  private setupIconClick() {
-    document.addEventListener('click', (event: any) => {
-      const btn = event.target.closest('.btn-eye');
-      if (btn) {
-        const tr = btn.closest('tr');
-        if (!tr) return;
-        const rows = Array.from(tr.parentNode.children);
-        const rowIndex = rows.indexOf(tr);
-        const rowData = this.paginatedData[rowIndex];
-        if (rowData) console.log('Row data:', rowData);
-      }
-    });
   }
 
   isActive(param:boolean): string{

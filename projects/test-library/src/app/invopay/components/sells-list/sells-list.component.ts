@@ -27,14 +27,15 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   subscription = new Subscription();
   
   columns = [
-    'fechaVenta',
+    'paymentDate',
     'nombreProducto',
     'broker',
     'cliente',
     'montoPoliza',
-    'montoPrima',
-    'detalle'
+    'montoPrima'
   ];
+  
+  actions = ['detail'];
   
   titlesFile = new Map<string, string>();
   tableStyle = 'invopay';
@@ -61,12 +62,9 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   }
   
   ngAfterViewChecked(): void {
-    this.renderIcons();
   }
   
   ngAfterViewInit(): void {
-    this.renderIcons();
-    this.setupIconClick();
   }
 
   ngOnInit() {
@@ -121,13 +119,12 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
             
             return {
               id: sale.id,
-              fechaVenta: this.formatDateToDDMMYYYY(sale.saleDate),
+              paymentDate: this.formatDateToDDMMYYYY(sale.saleDate),
               nombreProducto: sale.productName,
               broker: sale.brokerName,
               cliente: sale.customerName,
               montoPoliza: this.amountPipe.transform(sale.policyAmount, true, symbol, sale.currency),
               montoPrima: this.amountPipe.transform(sale.premiumAmount, true, symbol, sale.currency),
-              detalle: 'Ver',
               _rawData: sale
             };
           });
@@ -179,7 +176,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     
     let filteredData = this.originalData.filter(item => {
-      const itemDate = this.parseDateFromString(item.fechaVenta);
+      const itemDate = this.parseDateFromString(item.paymentDate);
       return itemDate >= firstDay && itemDate <= lastDay;
     });
     
@@ -191,13 +188,12 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
-      ['fechaVenta', this.translate.instant('IP.SELLS_LIST.TABLE.SALE_DATE')],
+      ['paymentDate', this.translate.instant('IP.SELLS_LIST.TABLE.SALE_DATE')],
       ['nombreProducto', this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME')],
       ['broker', this.translate.instant('IP.SELLS_LIST.TABLE.BROKER_NAME')],
       ['cliente', this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME')],
       ['montoPoliza', this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT')],
       ['montoPrima', this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT')],
-      ['detalle', this.translate.instant('IP.SELLS_LIST.TABLE.DETAIL')]
     ]);
     this.cdr.detectChanges();
   }
@@ -270,22 +266,49 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     this.updatePaginatedData();
   }
 
-  private renderIcons() {
-    const cells = document.querySelectorAll('td'); 
-    cells.forEach(cell => {
-      if (cell.textContent?.trim() === 'Ver') {
-        cell.innerHTML = `
-          <button class="btn-eye" title="Ver detalle">
-            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'
-                 fill='currentColor' class='bi bi-eye-fill'
-                 viewBox='0 0 16 16'>
-              <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0'/>
-              <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8
-                       m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7'/>
-            </svg>
-          </button>`;
+  onTableAction(event: any): void {
+    const { event: action, dataField } = event;
+    if (action === 'detail') {
+      this.onViewDetail(dataField);
+    }
+  }
+  
+  onTableSort(event: any): void {
+    const { event: sortDirection, key } = event;
+    
+    if (sortDirection === 'clean') {
+      this.data = [...this.data];
+      this.updatePaginatedData();
+      return;
+    }
+    
+    this.data.sort((a, b) => {
+      let aValue = a[key];
+      let bValue = b[key];
+      
+      if (key === 'paymentDate') {
+        aValue = this.parseDateFromString(aValue);
+        bValue = this.parseDateFromString(bValue);
       }
+      if (key === 'montoPoliza' || key === 'montoPrima') {
+        aValue = this.parseAmount(aValue);
+        bValue = this.parseAmount(bValue);
+      }
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.localeCompare(bValue);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
     });
+    
+    this.updatePaginatedData();
+  }
+  
+  private parseAmount(amountString: string): number {
+     const cleaned = amountString.replace(/[^0-9,-]/g, '').replace(/\./g, '').replace(',', '.');
+    return parseFloat(cleaned) || 0;
   }
   
   onItemsPerPageChange(newValue: number): void {
@@ -352,7 +375,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     if (this.fechaDesde) {
       const fechaDesdeDate = this.parseDate(this.fechaDesde);
       filteredData = filteredData.filter(item => {
-        const itemDate = this.parseDateFromString(item.fechaVenta);
+        const itemDate = this.parseDateFromString(item.paymentDate);
         return itemDate >= fechaDesdeDate;
       });
     }
@@ -360,7 +383,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     if (this.fechaHasta) {
       const fechaHastaDate = this.parseDate(this.fechaHasta);
       filteredData = filteredData.filter(item => {
-        const itemDate = this.parseDateFromString(item.fechaVenta);
+        const itemDate = this.parseDateFromString(item.paymentDate);
         return itemDate <= fechaHastaDate;
       });
     }
@@ -472,25 +495,12 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     return brokerMap[brokerValue] || '';
   }
   
-  private setupIconClick() {
-    document.addEventListener('click', (event: any) => {
-      const btn = event.target.closest('.btn-eye');
-      if (btn) {
-        const tr = btn.closest('tr');
-        if (!tr) return;
-        const rows = Array.from(tr.parentNode.children);
-        const rowIndex = rows.indexOf(tr);
-        const rowData = this.paginatedData[rowIndex];
-        if (rowData) this.onViewDetail(rowData);
-      }
-    });
-  }
   
   onViewDetail(row: any): void {
     console.log('Ver detalle de:', row.id);
     this.navigatingToDetail = true;
     this.saveCurrentState();
     localStorage.setItem('idSale', JSON.stringify(row.id));
-    this.router.navigate(['/sale-detail']);
+    this.router.navigate(['/invopay/sale-detail']);
   }
 }

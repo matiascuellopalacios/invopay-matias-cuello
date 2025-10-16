@@ -60,7 +60,7 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
    * Volver a la lista de recaudaciones
    */
   goBack(){
-    this.router.navigate(['/revenue-list']);
+    this.router.navigate(['/invopay/revenue-list']);
   }
   /**
    * Cargar el detalle de la recaudacion

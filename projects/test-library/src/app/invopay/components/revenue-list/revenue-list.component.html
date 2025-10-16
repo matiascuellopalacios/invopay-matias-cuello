@@ -23,8 +23,7 @@
     class="revenue-list__filter-input" 
     [(ngModel)]="fechaDesde"
     [max]="maxDate"
-    (change)="onFechaDesdeChange($event)"
-    [placeholder]="'IP.REVENUE_LIST.FILTERS.SELECT_DATE' | translate"/>
+    (change)="onFechaDesdeChange($event)"/>
 </div>
 
 <div class="revenue-list__filter-group">
@@ -36,8 +35,7 @@
     [(ngModel)]="fechaHasta"
     [min]="minDateHasta"
     [max]="maxDate"
-    (change)="onFechaHastaChange($event)"
-    [placeholder]="'IP.REVENUE_LIST.FILTERS.SELECT_DATE' | translate"/>
+    (change)="onFechaHastaChange($event)"/>
 </div>
         
         <div class="revenue-list__filter-actions">
@@ -50,9 +48,7 @@
             <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="revenue-list__filters-icon">
           </button>
           <button class="btn btn--delete" (click)="onClearFilters()">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4m2 0v9.333a1.333 1.333 0 0 1-1.334 1.334H4.667a1.333 1.333 0 0 1-1.334-1.334V4h9.334z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <img src="../../../assets/new-styles/icons/cleaning.svg" alt="Limpiar filtros" width="16" height="16">
           </button>
         </div>
       </div>
@@ -68,9 +64,12 @@
             [initTable]="false"
             [propertyOrder]="columns"
             [titlesFile]="titlesFile"
-            keyTranslate=""
+            [actions]="actions"
+            keyTranslate = 'IP.ADMIN_TABLE'
             [scroll]="true"
-            [tableStyle]="tableStyle">
+            [tableStyle]="tableStyle"
+            (action)="onTableAction($event)"
+            (sort)="onTableSort($event)">
             
           </app-table>
           
@@ -82,7 +81,7 @@
     </div>
 
     <!-- Paginator Section -->
-    <div class="revenue-list__paginator-container">
+    <div class="revenue-list__paginator-container" *ngIf="paginatedData && paginatedData.length > 0">
       <div class="revenue-list__rows-per-page">
         <span>Filas por páginas:</span>
         <select class="revenue-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
@@ -112,9 +111,9 @@
 
     <!-- Fila de Producto y Broker -->
     <div class="filters-row-modal">
-      <div class="filter-group-modal">
-        <label for="producto-modal">{{ 'IP.REVENUE_LIST.FILTERS.PAYMEN_CHANNEL' | translate }}</label>
-        <select id="producto-modal" [(ngModel)]="selectedpaymentChannel">
+      <div class="filter-group-modal filter-group-modal--floating">
+        <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.REVENUE_LIST.FILTERS.PAYMEN_CHANNEL' | translate }}</label>
+        <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedpaymentChannel">
           <option value="">{{ 'IP.REVENUE_LIST.PAYMENT_PLAYCEHOLDER' | translate }}</option>
           <option value="BOLETO">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.TICKET' | translate }}</option>
           <option value="TARJETA">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.CARD' | translate }}</option>

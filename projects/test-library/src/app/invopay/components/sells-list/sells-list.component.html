@@ -51,9 +51,7 @@
             <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
           </button>
           <button class="btn btn--delete" (click)="onClearFilters()">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4m2 0v9.333a1.333 1.333 0 0 1-1.334 1.334H4.667a1.333 1.333 0 0 1-1.334-1.334V4h9.334z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <img src="../../../assets/new-styles/icons/cleaning.svg" alt="Limpiar filtros" width="16" height="16">
           </button>
         </div>
       </div>
@@ -69,9 +67,12 @@
             [initTable]="false"
             [propertyOrder]="columns"
             [titlesFile]="titlesFile"
-            keyTranslate=""
+            [actions]="actions"
+            keyTranslate = 'IP.ADMIN_TABLE'
             [scroll]="true"
-            [tableStyle]="tableStyle">
+            [tableStyle]="tableStyle"
+            (action)="onTableAction($event)"
+            (sort)="onTableSort($event)">
             
           </app-table>
           
@@ -83,7 +84,7 @@
     </div>
 
     <!-- Paginator Section -->
-    <div class="sales-list__paginator-container">
+    <div class="sales-list__paginator-container" *ngIf="paginatedData && paginatedData.length > 0">
       <div class="sales-list__rows-per-page">
         <span>Filas por páginas:</span>
         <select class="sales-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
@@ -113,9 +114,9 @@
 
     <!-- Fila de Producto y Broker -->
     <div class="filters-row-modal">
-      <div class="filter-group-modal">
-        <label for="producto-modal">{{ 'IP.SELLS_LIST.FILTERS.PRODUCT' | translate }}</label>
-        <select id="producto-modal" [(ngModel)]="selectedProduct">
+      <div class="filter-group-modal filter-group-modal--floating">
+        <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.PRODUCT' | translate }}</label>
+        <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedProduct">
           <option value="">{{ 'IP.SELLS_LIST.FILTERS.PRODUCTS_PLACEHOLDER' | translate }}</option>
           <option value="Seguro de Vida Total">{{ 'IP.SELLS_LIST.PRODUCTS.HEALTH_INSURANCE' | translate }}</option>
           <option value="Seguro de Hogar Premium">{{ 'IP.SELLS_LIST.PRODUCTS.HOME_INSURANCE' | translate }}</option>
@@ -124,9 +125,9 @@
         </select>
       </div>
 
-      <div class="filter-group-modal">
-        <label for="broker-modal">{{ 'IP.SELLS_LIST.FILTERS.BROKER' | translate }}</label>
-        <select id="broker-modal" [(ngModel)]="selectedBroker">
+      <div class="filter-group-modal filter-group-modal--floating">
+        <label for="broker-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.BROKER' | translate }}</label>
+        <select id="broker-modal" class="filter-select-modal--floating" [(ngModel)]="selectedBroker">
           <option value="">{{ 'IP.SELLS_LIST.FILTERS.BROKERS_PLACEHOLDER' | translate }}</option>
           <option value="juan-perez">{{ 'IP.SELLS_LIST.BROKERS.JUAN_PEREZ' | translate }}</option>
           <option value="Sofía Gómez">{{ 'IP.SELLS_LIST.BROKERS.SOFIA_GOMEZ' | translate }}</option>

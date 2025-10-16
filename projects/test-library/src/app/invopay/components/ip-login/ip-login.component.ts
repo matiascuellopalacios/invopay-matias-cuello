@@ -82,7 +82,7 @@ export class IpLoginComponent implements OnInit, OnDestroy {
       };
       this.authService.login(loginData, this.isAdminLogin).subscribe({
         next: (resp) => {
-          this.router.navigate(['/home']).then().catch(errorHandler);
+          this.router.navigate(['/invopay/home']).then().catch(errorHandler);
         },
         error: (e: HttpErrorResponse) => {
           if (e.error.description) {

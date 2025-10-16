@@ -2367,8 +2367,8 @@
       "TITLE": "Listado de Ventas",
       "FILTERS": {
         "TITLE": "Filtros",
-        "DATE_FROM": "Fecha desde",
-        "DATE_TO": "Fecha hasta",
+        "DATE_FROM": "Desde",
+        "DATE_TO": "Hasta",
         "PRODUCT": "Producto",
         "BROKER": "Broker",
         "PRODUCTS_PLACEHOLDER": "Productos",
@@ -2441,8 +2441,8 @@
       "TITLE":"Listado de Recaudaciones",
       "FILTERS":{
         "TITLE":"Filtros",
-        "DATE_FROM":"Fecha desde",
-        "DATE_TO":"Fecha hasta",
+        "DATE_FROM":"Desde",
+        "DATE_TO":"Hasta",
         "PAYMEN_CHANNEL":"Canal de pago"
       },
       "TABLE":{

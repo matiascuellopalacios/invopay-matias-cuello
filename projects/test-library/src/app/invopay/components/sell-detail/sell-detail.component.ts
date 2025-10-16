@@ -177,6 +177,6 @@ export class SellDetailComponent implements OnInit,OnDestroy {
    * Volver a la lista de ventas
    */
   goBack(){
-    this.router.navigate(['/sell-list']);
+    this.router.navigate(['/invopay/sell-list']);
   }
 }

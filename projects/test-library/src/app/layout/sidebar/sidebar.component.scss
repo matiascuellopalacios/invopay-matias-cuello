@@ -1,7 +1,6 @@
 @import "../../../../../base/src/shared/mixins/generalText.scss";
 @import "../../../../../base/src/shared/mixins/sizes.scss";
 @import "../../../../../base/src/shared/mixins/utils.scss";
-@import "../../../../../base/src/shared/mixins/sizes.scss";
 
 .sidebar {
   position: fixed;
@@ -105,7 +104,7 @@
     &.active,
     &.router-link-active {
       background: #EFF6FF; 
-      color: #2563EB; 
+      color: $primary-color; 
       font-weight: 500;
 
       &::before {
@@ -116,7 +115,7 @@
         transform: translateY(-50%);
         width: 3px;
         height: 70%;
-        background: #2563EB;
+        background: $primary-color;
         border-radius: 0 3px 3px 0;
       }
 
@@ -182,7 +181,7 @@
   .menu-item-group {
   display: flex;
   flex-direction: column;
-  color: #2563EB;
+  color: $primary-color;
 }
 }
 

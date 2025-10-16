@@ -12,6 +12,7 @@ import { SharedModule } from "projects/base/src/shared/shared.module";
 import { SellsListComponent } from './invopay/components/sells-list/sells-list.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { CurrencySymbolPipe } from 'projects/base/src/shared/Utils/currency-simbol-pipe';
 import { AmountFormatPipe } from 'projects/base/src/shared/Utils/amount-format-pipe.pipe';
 import { SellDetailComponent } from './invopay/components/sell-detail/sell-detail.component';
@@ -30,7 +31,7 @@ import { PaymentsEntitiesListComponent } from './invopay/components/payments-ent
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,SellsListComponent,NavbarComponent,SidebarComponent, SellDetailComponent, RevenueListComponent, RevenueDetailComponent, PaymentsEntitiesListComponent],
+  declarations: [AppComponent, HomeComponent,SellsListComponent,NavbarComponent,SidebarComponent,MainLayoutComponent, SellDetailComponent, RevenueListComponent, RevenueDetailComponent, PaymentsEntitiesListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

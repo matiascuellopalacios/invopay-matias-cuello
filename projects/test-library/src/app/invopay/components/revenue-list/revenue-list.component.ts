@@ -41,12 +41,9 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     }
   }
   ngAfterViewChecked(): void {
-    this.renderIcons();
   }
   
   ngAfterViewInit(): void {
-    this.renderIcons();
-    this.setupIconClick();
   }
   data: any[] = [];
   originalData: any[] = [];
@@ -67,7 +64,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   paginatorKey: number = 0;
   isLoading: boolean = false;
   columns = [
-    'fechaHora',
+    'paymentDate',
     'moneda',
     'monto',
     'proveedor',
@@ -76,16 +73,17 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     'nroPoliza',
     'producto',
     'montoPrima',
-    'broker',
-    'detalle'
+    'broker'
   ];
+  
+  actions = ['detail'];
 
   /*
   *Translations
   */
    private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
-      ['fechaHora', this.translate.instant('IP.REVENUE_LIST.TABLE.REVENUE_DATE')],
+      ['paymentDate', this.translate.instant('IP.REVENUE_LIST.TABLE.REVENUE_DATE')],
       ['moneda', this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY')],
       ['monto', this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT')],
       ['proveedor', this.translate.instant('IP.REVENUE_LIST.TABLE.PROVIDEER')],
@@ -94,8 +92,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
       ['nroPoliza', this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER')],
       ['producto', this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME')],
       ['montoPrima', this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_AMOUNT')],
-      ['broker', this.translate.instant('IP.REVENUE_LIST.TABLE.BROKER_NAME')],
-      ['detalle', this.translate.instant('IP.REVENUE_LIST.TABLE.DETAIL')]
+      ['broker', this.translate.instant('IP.REVENUE_LIST.TABLE.BROKER_NAME')]
     ]);
     this.cdr.detectChanges();
   }
@@ -134,7 +131,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
                   const fechaHoraFormateada = this.formatDateTimeManual(revenueDate);
                   return {
                     id: revenue.id,
-                    fechaHora:fechaHoraFormateada,
+                    paymentDate:fechaHoraFormateada,
                     moneda: revenue.currency,
                     monto: this.amountPipe.transform(revenue.revenueAmount, true, symbol, revenue.currency),
                     proveedor: revenue.paymentProvider,
@@ -146,7 +143,6 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
                     ? this.amountPipe.transform(revenue.premiumAmount, true, symbol, revenue.currency) 
                     : '-',
                     broker: revenue.isConsolidated ? revenue.brokerName : '-',
-                    detalle: 'Ver',
                     _rawData: revenue
                   };
                 });
@@ -227,22 +223,58 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.updatePaginatedData();
   }
 
-  private renderIcons() {
-    const cells = document.querySelectorAll('td'); 
-    cells.forEach(cell => {
-      if (cell.textContent?.trim() === 'Ver') {
-        cell.innerHTML = `
-          <button class="btn-eye" title="Ver detalle">
-            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'
-                 fill='currentColor' class='bi bi-eye-fill'
-                 viewBox='0 0 16 16'>
-              <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0'/>
-              <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8
-                       m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7'/>
-            </svg>
-          </button>`;
+  onTableAction(event: any): void {
+    const { event: action, dataField } = event;
+    if (action === 'detail') {
+      this.onViewDetail(dataField);
+    }
+  }
+  
+  onTableSort(event: any): void {
+    const { event: sortDirection, key } = event;
+    
+    if (sortDirection === 'clean') {
+      this.data = [...this.data];
+      this.updatePaginatedData();
+      return;
+    }
+    
+    this.data.sort((a, b) => {
+      let aValue = a[key];
+      let bValue = b[key];
+      
+      if (key === 'paymentDate') {
+        aValue = this.parseDateTimeFromString(aValue);
+        bValue = this.parseDateTimeFromString(bValue);
       }
+      
+      if (key === 'monto' || key === 'montoPrima') {
+        aValue = this.parseAmount(aValue);
+        bValue = this.parseAmount(bValue);
+      }
+      
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.localeCompare(bValue);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }
+      
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
     });
+    
+    this.updatePaginatedData();
+  }
+  
+  private parseAmount(amountString: string): number {
+    const cleaned = amountString.replace(/[^0-9,-]/g, '').replace(/\./g, '').replace(',', '.');
+    return parseFloat(cleaned) || 0;
+  }
+  
+  private parseDateTimeFromString(dateString: string): Date {
+    const [datePart] = dateString.split(' - ');
+    const [day, month, year] = datePart.split('/').map(Number);
+    return new Date(year, month - 1, day);
   }
   
   onItemsPerPageChange(newValue: number): void {
@@ -257,25 +289,12 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.updatePaginatedData();
   }
 
-  private setupIconClick() {
-    document.addEventListener('click', (event: any) => {
-      const btn = event.target.closest('.btn-eye');
-      if (btn) {
-        const tr = btn.closest('tr');
-        if (!tr) return;
-        const rows = Array.from(tr.parentNode.children);
-        const rowIndex = rows.indexOf(tr);
-        const rowData = this.paginatedData[rowIndex];
-        if (rowData) this.onViewDetail(rowData);
-      }
-    });
-  }
   
   onViewDetail(row: any): void {
     this.navigatingToDetail = true;
     this.saveCurrentState();
     localStorage.setItem('idRevenue', JSON.stringify(row.id));
-    this.router.navigate(['/revenue-detail']);
+    this.router.navigate(['/invopay/revenue-detail']);
   }
   /**
    * applyCurrentMonthFilter
