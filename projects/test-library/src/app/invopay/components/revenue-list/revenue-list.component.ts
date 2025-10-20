@@ -7,6 +7,8 @@ import { CustomDatePipe } from 'projects/base/src/shared/Utils/pipeCustomDate';
 import { RevenueService } from '../../services/revenue/revenue.service';
 import { Subscription } from 'rxjs';
 import { Revenue } from '../../interface/Revenue';
+import { CardConfig } from '../../interface/movile-table';
+
 @Component({
   selector: 'app-revenue-list',
   templateUrl: './revenue-list.component.html',
@@ -26,13 +28,32 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   
   ngOnInit(): void {
     this.setMaxDate();
+    this.initializeMobileCardConfig();
     this.translate.get('IP.SELLS_LIST.TABLE.SALE_DATE').subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     this.translate.onLangChange.subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     this.loadRevenues();  
+  }
+  
+  private initializeMobileCardConfig(): void {
+    this.mobileCardConfig = {
+      headerKey: 'paymentDate',
+      fields: [
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY'), key: 'moneda' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT'), key: 'monto', highlight: true, isAmount: true },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER'), key: 'nroPoliza' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME'), key: 'producto' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.BROKER_NAME'), key: 'broker' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_CHANNEL'), key: 'canalPago' }
+      ],
+      showActionButton: true,
+      actionIcon: 'eye'
+    };
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -63,6 +84,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   minDateHasta: string = '';
   paginatorKey: number = 0;
   isLoading: boolean = false;
+  mobileCardConfig!: CardConfig;
   columns = [
     'paymentDate',
     'moneda',
@@ -228,6 +250,10 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     if (action === 'detail') {
       this.onViewDetail(dataField);
     }
+  }
+  
+  onMobileCardAction(item: any): void {
+    this.onViewDetail(item);
   }
   
   onTableSort(event: any): void {

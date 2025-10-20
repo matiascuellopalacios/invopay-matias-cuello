@@ -2399,7 +2399,8 @@
       "MODAL":{
         "TITTLE":"Filtrar ventas",
         "APPLY":"Aplicar",
-        "CANCEL":"Cancelar"
+        "CANCEL":"Cerrar",
+        "CLEAR":"Limpiar filtros"
       }
     },
     "SELL_DETAIL":{

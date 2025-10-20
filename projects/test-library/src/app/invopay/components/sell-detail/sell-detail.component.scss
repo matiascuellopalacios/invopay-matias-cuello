@@ -175,6 +175,21 @@
   &__table-wrapper {
     width: 100%;
     overflow-x: auto;
+
+    &--desktop {
+      display: block;
+    }
+  }
+
+  &__cards-container {
+    display: none;
+
+    &--mobile {
+      @include sm {
+        display: block;
+        margin-top: 15px;
+      }
+    }
   }
 
   &__paginator-container {
@@ -258,6 +273,10 @@
       padding: 16px;
       width: 100% !important;
       max-width: 100% !important;
+    }
+
+    &__table-wrapper--desktop {
+      display: none;
     }
 
     &__paginator-container {

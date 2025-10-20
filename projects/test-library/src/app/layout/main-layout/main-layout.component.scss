@@ -18,11 +18,11 @@
   }
 
   @include mmd {
-    margin-left: 0;
+    margin-left: 240px;
     padding: 60px 20px 20px 20px;
 
     &.sidebar-collapsed {
-      margin-left: 0;
+      margin-left: 50px;
     }
   }
 

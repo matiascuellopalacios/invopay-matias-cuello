@@ -5,8 +5,8 @@
       <h1 class="payment-entities__title">{{ 'IP.PAYMENTS_ENTITIES.TITTLE' | translate }}</h1>
     </div>
 
-    <!-- Table Container -->
-    <div class="payment-entities__table-container">
+    <!-- Table Container - Desktop -->
+    <div class="payment-entities__table-container payment-entities__table-container--desktop">
       <div class="payment-entities__body">
         <div>
           <app-table
@@ -27,6 +27,17 @@
           </app-no-data>
         </div>
       </div>
+    </div>
+
+    <!-- Cards Container - Mobile -->
+    <div class="payment-entities__cards-container payment-entities__cards-container--mobile">
+      <app-mobile-card-list
+        [data]="paginatedData"
+        [config]="mobileCardConfig"
+        [showNoData]="!paginatedData || paginatedData.length === 0"
+        (cardAction)="onMobileCardAction($event)">
+        <app-no-data no-data></app-no-data>
+      </app-mobile-card-list>
     </div>
 
     <!-- Paginator Section -->

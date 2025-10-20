@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterViewChecked, inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { RevenueService } from '../../services/revenue/revenue.service';
-import { Router } from '@angular/router';
-import { CustomDatePipe } from 'projects/base/src/shared/Utils/pipeCustomDate';
+import { Subscription } from 'rxjs';
 import { AmountFormatPipe } from 'projects/base/src/shared/Utils/amount-format-pipe.pipe';
 import { CurrencySymbolPipe } from 'projects/base/src/shared/Utils/currency-simbol-pipe';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { CardConfig } from '../../interface/movile-table';
+import { CustomDatePipe } from 'projects/base/src/shared/Utils/pipeCustomDate';
+
 @Component({
   selector: 'app-revenue-detail',
   templateUrl: './revenue-detail.component.html',
@@ -33,6 +35,7 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   showPaginator: boolean = true;
   paginatorKey: number = 0;
   isLoading: boolean = false;
+  mobileCardConfig!: CardConfig;
   data: any[] = []
   columns=[
     'nCuota',
@@ -41,8 +44,10 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   ]
   ngOnInit(): void {
     this.initializeTranslations();
+    this.initializeMobileCardConfig();
     this.translate.onLangChange.subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     localStorage.getItem('idRevenue');
     if(localStorage.getItem('idRevenue')){
@@ -51,6 +56,18 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
     }else{
       this.goBack();
     }
+  }
+  
+  private initializeMobileCardConfig(): void {
+    this.mobileCardConfig = {
+      headerKey: 'nCuota',
+      headerLabel: this.translate.instant('IP.REVENUE_DETAIL.TABLE.N_PAYMENTS'),
+      fields: [
+        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.DATE_EXPIRY'), key: 'fechaVencimiento' },
+        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.PAYMENT_VALUE'), key: 'valorPago', highlight: true, isAmount: true }
+      ],
+      showActionButton: false
+    };
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -106,26 +123,12 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   }
 
   updatePaginatedData() {
-    this.itemsPerPage = +this.itemsPerPage;
-    const start = (this.currentPages - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedData = this.data.slice(start, end);
+    this.paginatedData = this.data;
   }
   
   loadData(): void {
     console.log(this.data);
     this.totalItems = this.data.length;
-    this.updatePaginatedData();
-  }
-  onItemsPerPageChange(newValue: number): void {
-    this.itemsPerPage = Number(newValue);
-    this.currentPages = 1;
-    this.paginatorKey++;
-    this.showPaginator = false;
-    setTimeout(() => {
-      this.showPaginator = true;
-      this.cdr.detectChanges();
-    }, 0);
     this.updatePaginatedData();
   }
   /**

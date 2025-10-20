@@ -50,15 +50,12 @@
           <button class="btn btn--search" (click)="openFilters()">
             <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
           </button>
-          <button class="btn btn--delete" (click)="onClearFilters()">
-            <img src="../../../assets/new-styles/icons/cleaning.svg" alt="Limpiar filtros" width="16" height="16">
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- Table Container -->
-    <div class="sales-list__table-container">
+    <!-- Table Container - Desktop -->
+    <div class="sales-list__table-container sales-list__table-container--desktop">
       <div class="sales-list__body">
         <div>
           <app-table
@@ -81,6 +78,17 @@
           </app-no-data>
         </div>
       </div>
+    </div>
+
+    <!-- Cards Container - Mobile -->
+    <div class="sales-list__cards-container sales-list__cards-container--mobile">
+      <app-mobile-card-list
+        [data]="paginatedData"
+        [config]="mobileCardConfig"
+        [showNoData]="!paginatedData || paginatedData.length === 0"
+        (cardAction)="onMobileCardAction($event)">
+        <app-no-data no-data></app-no-data>
+      </app-mobile-card-list>
     </div>
 
     <!-- Paginator Section -->
@@ -138,6 +146,7 @@
 
     <!-- Botones -->
     <div class="filter-actions-modal">
+      <button class="btn btn--clear" (click)="onClearFilters()">{{ 'IP.SELLS_LIST.MODAL.CLEAR' | translate }}</button>
       <button class="btn btn--cancel" (click)="closeFilters()">{{ 'IP.SELLS_LIST.MODAL.CANCEL' | translate }}</button>
       <button class="btn btn--apply" (click)="applyModalFilters()">{{ 'IP.SELLS_LIST.MODAL.APPLY' | translate }}</button>
     </div>

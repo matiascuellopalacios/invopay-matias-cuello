@@ -141,7 +141,9 @@
             </div>
           </div>
       <h3 class="revenue-detail__payment-title">{{'IP.REVENUE_DETAIL.TABLE.TITTLE'|translate}}</h3>
-      <div class="revenue-detail__table-wrapper">
+      
+      <!-- Table - Desktop -->
+      <div class="revenue-detail__table-wrapper revenue-detail__table-wrapper--desktop">
         <app-table
           *ngIf="titlesFile && titlesFile.size > 0 && paginatedData && paginatedData.length > 0"
           [data]="paginatedData"
@@ -158,27 +160,14 @@
         </app-no-data>
       </div>
 
-      <!-- Paginador -->
-      <div class="revenue-detail__paginator-container" *ngIf="paginatedData && paginatedData.length > 0">
-        <div class="revenue-detail__rows-per-page">
-          <span>{{ 'IP.REVENUE_DETAIL.ROWS_PER_PAGE' | translate }}</span>
-          <select class="revenue-detail__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
-            <option [value]="5">5</option>
-            <option [value]="10">10</option>
-            <option [value]="25">25</option>
-            <option [value]="50">50</option>
-            <option [value]="100">100</option>
-          </select>
-        </div>
-        
-        <app-paginator 
-          *ngIf="showPaginator"
-          class="revenue-detail__paginator"
-          [totalItems]="totalItems"
-          [itemsPerPage]="itemsPerPage"
-          [currentPages]="currentPages"
-          (pageChange)="onPageChange($event)">
-        </app-paginator>
+      <!-- Cards - Mobile -->
+      <div class="revenue-detail__cards-container revenue-detail__cards-container--mobile">
+        <app-mobile-card-list
+          [data]="paginatedData"
+          [config]="mobileCardConfig"
+          [showNoData]="!paginatedData || paginatedData.length === 0">
+          <app-no-data no-data></app-no-data>
+        </app-mobile-card-list>
       </div>
     </div>
   </div>

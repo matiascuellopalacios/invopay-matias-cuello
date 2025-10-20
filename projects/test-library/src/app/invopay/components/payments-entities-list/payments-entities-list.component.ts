@@ -3,6 +3,7 @@ import { ProvidersService } from '../../services/providers/providers.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PaymentProvider } from '../../interface/paymentEntities';
+import { CardConfig } from '../../interface/movile-table';
 @Component({
   selector: 'app-payments-entities-list',
   templateUrl: './payments-entities-list.component.html',
@@ -13,13 +14,29 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
+    this.initializeMobileCardConfig();
     this.translate.get('IP.PAYMENTS_ENTITIES.TABLE.LOGO').subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     this.translate.onLangChange.subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     this.loadProviders();
+  }
+  
+  private initializeMobileCardConfig(): void {
+    this.mobileCardConfig = {
+      headerKey: 'nombreProveedor',
+      fields: [
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL'), key: 'canal' },
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE'), key: 'activo' },
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION'), key: 'descripcion' }
+      ],
+      showActionButton: true,
+      actionIcon: 'eye'
+    };
   }
   ngAfterViewChecked(): void {
     this.renderLogos();
@@ -48,6 +65,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   totalItems: number = 0;
   showPaginator: boolean = true;
   paginatorKey: number = 0;
+  mobileCardConfig!: CardConfig;
   subscription=new Subscription();
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
@@ -108,6 +126,10 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     if (action === 'detail') {
       console.log('Ver detalle:', dataField);
     }
+  }
+  
+  onMobileCardAction(item: any): void {
+    console.log('Ver detalle:', item);
   }
 
  private renderLogos() {

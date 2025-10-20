@@ -7,6 +7,7 @@ import { CurrencySymbolPipe } from 'projects/base/src/shared/Utils/currency-simb
 import { Router } from '@angular/router';
 import { Sale } from '../../interface/Sales';
 import { SellsListState } from '../../interface/saleFilters';
+import { CardConfig } from '../../interface/movile-table';
 
 @Component({
   selector: 'app-sells-list',
@@ -57,6 +58,8 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   paginatorKey: number = 0;
   isLoading: boolean = false;
   
+  mobileCardConfig!: CardConfig;
+  
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -69,15 +72,33 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
 
   ngOnInit() {
     this.setMaxDate();
+    this.initializeMobileCardConfig();
     
     this.translate.get('IP.SELLS_LIST.TABLE.SALE_DATE').subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     this.translate.onLangChange.subscribe(() => {
       this.initializeTranslations();
+      this.initializeMobileCardConfig();
     });
     
     this.loadSalesFromBackend();
+  }
+  
+  private initializeMobileCardConfig(): void {
+    this.mobileCardConfig = {
+      headerKey: 'paymentDate',
+      fields: [
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME'), key: 'nombreProducto' },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.BROKER_NAME'), key: 'broker' },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME'), key: 'cliente' },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT'), key: 'montoPoliza', highlight: true, isAmount: true },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT'), key: 'montoPrima' }
+      ],
+      showActionButton: true,
+      actionIcon: 'eye'
+    };
   }
   
   /**
@@ -271,6 +292,10 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     if (action === 'detail') {
       this.onViewDetail(dataField);
     }
+  }
+  
+  onMobileCardAction(item: any): void {
+    this.onViewDetail(item);
   }
   
   onTableSort(event: any): void {

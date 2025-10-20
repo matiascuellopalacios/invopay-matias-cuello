@@ -22,11 +22,13 @@ import { InvopayRoutingModule } from './invopay-routing.module';
 import { DecryptionInterceptor } from './services/decryption.interceptor';
 import { DecryptionService } from './services/decryption.service';
 import { TokenInterceptor } from './services/token.interceptor';
+import { MobileCardListComponent } from './components/mobile-card-list/mobile-card-list.component';
 
 
 @NgModule({
     declarations: [
-        IpLoginComponent
+        IpLoginComponent,
+        MobileCardListComponent
     ],
     imports: [
         CommonModule,
@@ -60,7 +62,8 @@ import { TokenInterceptor } from './services/token.interceptor';
         },
     ],
     exports: [
-        IpLoginComponent
+        IpLoginComponent,
+        MobileCardListComponent
     ]
 })
 export class InvopayModule { }
