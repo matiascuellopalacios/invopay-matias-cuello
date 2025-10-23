@@ -1,0 +1,15 @@
+<div class="additional-filters-modal" *ngIf="open" (click)="onOverlayClick()">
+  <div class="additional-filters-modal__content" (click)="$event.stopPropagation()">
+    <h3 class="additional-filters-modal__title">{{ title }}</h3>
+    
+    <div class="additional-filters-modal__body">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="additional-filters-modal__footer">
+      <button type="button" class="btn btn--clear" (click)="onClearClick()">{{ clearLabel }}</button>
+      <button type="button" class="btn btn--cancel" (click)="onCancelClick()">{{ cancelLabel }}</button>
+      <button type="button" class="btn btn--apply" (click)="onApplyClick()">{{ applyLabel }}</button>
+    </div>
+  </div>
+</div>

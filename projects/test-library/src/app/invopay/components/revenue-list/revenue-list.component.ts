@@ -44,12 +44,12 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.mobileCardConfig = {
       headerKey: 'paymentDate',
       fields: [
-        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY'), key: 'moneda' },
-        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT'), key: 'monto', highlight: true, isAmount: true },
-        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER'), key: 'nroPoliza' },
-        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME'), key: 'producto' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY'), key: 'currency' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT'), key: 'amount', highlight: true, isAmount: true },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER'), key: 'policyNumber' },
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME'), key: 'product' },
         { label: this.translate.instant('IP.REVENUE_LIST.TABLE.BROKER_NAME'), key: 'broker' },
-        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_CHANNEL'), key: 'canalPago' }
+        { label: this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_CHANNEL'), key: 'paymentChannel' }
       ],
       showActionButton: true,
       actionIcon: 'eye'
@@ -77,24 +77,30 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   totalItems: number = 0;
   showPaginator: boolean = true;
   showFiltersModal = false;
-  selectedpaymentChannel: string = '';
-  fechaDesde: string = '';
-  fechaHasta: string = '';
+  showMobileFiltersModal = false;
+  selectedPaymentChannel: string = '';
+  dateFrom: string = '';
+  dateTo: string = '';
   maxDate: string = '';
-  minDateHasta: string = '';
+  minDateTo: string = '';
   paginatorKey: number = 0;
   isLoading: boolean = false;
   mobileCardConfig!: CardConfig;
+
+  get isSearchDisabled(): boolean {
+    return (!this.dateFrom || !this.dateTo) && !this.selectedPaymentChannel;
+  }
+
   columns = [
     'paymentDate',
-    'moneda',
-    'monto',
-    'proveedor',
-    'canalPago',
-    'consolidada',
-    'nroPoliza',
-    'producto',
-    'montoPrima',
+    'currency',
+    'amount',
+    'provider',
+    'paymentChannel',
+    'consolidated',
+    'policyNumber',
+    'product',
+    'premiumAmount',
     'broker'
   ];
   
@@ -106,14 +112,14 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
    private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
       ['paymentDate', this.translate.instant('IP.REVENUE_LIST.TABLE.REVENUE_DATE')],
-      ['moneda', this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY')],
-      ['monto', this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT')],
-      ['proveedor', this.translate.instant('IP.REVENUE_LIST.TABLE.PROVIDEER')],
-      ['canalPago', this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_CHANNEL')],
-      ['consolidada', this.translate.instant('IP.REVENUE_LIST.TABLE.CONSOLIDATED')],
-      ['nroPoliza', this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER')],
-      ['producto', this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME')],
-      ['montoPrima', this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_AMOUNT')],
+      ['currency', this.translate.instant('IP.REVENUE_LIST.TABLE.CURRENCY')],
+      ['amount', this.translate.instant('IP.REVENUE_LIST.TABLE.AMOUNT')],
+      ['provider', this.translate.instant('IP.REVENUE_LIST.TABLE.PROVIDEER')],
+      ['paymentChannel', this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_CHANNEL')],
+      ['consolidated', this.translate.instant('IP.REVENUE_LIST.TABLE.CONSOLIDATED')],
+      ['policyNumber', this.translate.instant('IP.REVENUE_LIST.TABLE.POLICY_NUMBER')],
+      ['product', this.translate.instant('IP.REVENUE_LIST.TABLE.PRODUCT_NAME')],
+      ['premiumAmount', this.translate.instant('IP.REVENUE_LIST.TABLE.PAYMENT_AMOUNT')],
       ['broker', this.translate.instant('IP.REVENUE_LIST.TABLE.BROKER_NAME')]
     ]);
     this.cdr.detectChanges();
@@ -122,7 +128,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * setMaxDate
    * ----------
-   * Establece la fecha máxima como el día de hoy
+   * Sets the maximum date as today
    */
   private setMaxDate(): void {
     const today = new Date();
@@ -131,7 +137,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * formatDateToYYYYMMDD
    * --------------------
-   * Convierte una fecha a formato YYYY-MM-DD para los inputs de tipo date
+   * Converts a date to YYYY-MM-DD format for date type inputs
    */
   private formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
@@ -140,9 +146,9 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     return `${year}-${month}-${day}`;
   }
 
-  /*
-  * Load revenues
-  */
+  /**
+   * Load revenues
+   */
  loadRevenues(){
   const sub=this.revenueService.getAllRevenue().subscribe({
     next:(res)=>{
@@ -154,14 +160,14 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
                   return {
                     id: revenue.id,
                     paymentDate:fechaHoraFormateada,
-                    moneda: revenue.currency,
-                    monto: this.amountPipe.transform(revenue.revenueAmount, true, symbol, revenue.currency),
-                    proveedor: revenue.paymentProvider,
-                    canalPago:revenue.paymentChannel,
-                    consolidada: revenue.isConsolidated ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
-                    nroPoliza: revenue.isConsolidated ? revenue.policyNumber : '-',
-                    producto: revenue.isConsolidated ? revenue.productName : '-',
-                    montoPrima: revenue.isConsolidated 
+                    currency: revenue.currency,
+                    amount: this.amountPipe.transform(revenue.revenueAmount, true, symbol, revenue.currency),
+                    provider: revenue.paymentProvider,
+                    paymentChannel:revenue.paymentChannel,
+                    consolidated: revenue.isConsolidated ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
+                    policyNumber: revenue.isConsolidated ? revenue.policyNumber : '-',
+                    product: revenue.isConsolidated ? revenue.productName : '-',
+                    premiumAmount: revenue.isConsolidated 
                     ? this.amountPipe.transform(revenue.premiumAmount, true, symbol, revenue.currency) 
                     : '-',
                     broker: revenue.isConsolidated ? revenue.brokerName : '-',
@@ -188,13 +194,13 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * saveCurrentState
    * ----------------
-   * Guarda el estado actual de filtros y paginación en el servicio
+   * Saves the current state of filters and pagination in the service
    */
   private saveCurrentState(): void {
     this.revenueService.saveState({
-      fechaDesde: this.fechaDesde,
-      fechaHasta: this.fechaHasta,
-      selectedChanelPayment: this.selectedpaymentChannel,
+      dateFrom: this.dateFrom,
+      dateTo: this.dateTo,
+      selectedChanelPayment: this.selectedPaymentChannel,
       currentPage: this.currentPages,
       itemsPerPage: this.itemsPerPage,
       filteredData: this.data
@@ -204,20 +210,20 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * restoreState
    * ------------
-   * Restaura el estado guardado de filtros y paginación
+   * Restores the saved state of filters and pagination
    */
   private restoreState(): void {
     const state = this.revenueService.getState();
     if (state) {
-      this.fechaDesde = state.fechaDesde;
-      this.fechaHasta = state.fechaHasta;
-      this.selectedpaymentChannel = state.selectedChanelPayment;
+      this.dateFrom = state.dateFrom;
+      this.dateTo = state.dateTo;
+      this.selectedPaymentChannel = state.selectedChanelPayment;
       this.currentPages = state.currentPage;
       this.itemsPerPage = state.itemsPerPage;
       this.data = state.filteredData;
       
-      if (this.fechaDesde) {
-        this.minDateHasta = this.fechaDesde;
+      if (this.dateFrom) {
+        this.minDateTo = this.dateFrom;
       }
       
       this.loadData();
@@ -226,7 +232,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
 
 
   /**
-   * Paginación
+   * Pagination
    */
   onPageChange(page: number) {
     this.currentPages = page;
@@ -274,7 +280,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
         bValue = this.parseDateTimeFromString(bValue);
       }
       
-      if (key === 'monto' || key === 'montoPrima') {
+      if (key === 'amount' || key === 'premiumAmount') {
         aValue = this.parseAmount(aValue);
         bValue = this.parseAmount(bValue);
       }
@@ -325,7 +331,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * applyCurrentMonthFilter
    * -----------------------
-   * Filtra los datos del mes actual sin modificar los inputs.
+   * Filters data for the current month without modifying the inputs.
    */
   private applyCurrentMonthFilter(): void {
     const now = new Date();
@@ -349,13 +355,13 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
 /**
    * onClearFilters
    * --------------
-   * Limpia todos los filtros y vuelve a mostrar los datos del mes actual
+   * Clears all filters and displays the current month's data again
    */
   onClearFilters(): void {
-    this.fechaDesde = '';
-    this.fechaHasta = '';
-    this.selectedpaymentChannel = '';
-    this.minDateHasta = '';
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.selectedPaymentChannel = '';
+    this.minDateTo = '';
     
     this.applyCurrentMonthFilter();
   }
@@ -373,48 +379,56 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.closeFilters();
   }
 
+  openMobileFilters(): void {
+    this.showMobileFiltersModal = true;
+  }
+  
+  closeMobileFilters(): void {
+    this.showMobileFiltersModal = false;
+  }
+
   /**
-   * onFechaDesdeChange
-   * ------------------
-   * Maneja el cambio en la fecha "desde" y actualiza la fecha mínima para "hasta"
+   * onDateFromChange
+   * ----------------
+   * Handles the change in the "from" date and updates the minimum date for "to"
    */
-  onFechaDesdeChange(event: any): void {
-    this.fechaDesde = event.target.value;
+  onDateFromChange(event: any): void {
+    this.dateFrom = event.target.value;
     
-    if (this.fechaDesde) {
-      this.minDateHasta = this.fechaDesde;
+    if (this.dateFrom) {
+      this.minDateTo = this.dateFrom;
       
-      if (this.fechaHasta && this.fechaHasta < this.fechaDesde) {
-        this.fechaHasta = '';
+      if (this.dateTo && this.dateTo < this.dateFrom) {
+        this.dateTo = '';
       }
     } else {
-      this.minDateHasta = '';
+      this.minDateTo = '';
     }
   }
 
   /**
-   * onFechaHastaChange
-   * ------------------
-   * Maneja el cambio en la fecha "hasta"
+   * onDateToChange
+   * --------------
+   * Handles the change in the "to" date
    */
-  onFechaHastaChange(event: any): void {
-    this.fechaHasta = event.target.value;
+  onDateToChange(event: any): void {
+    this.dateTo = event.target.value;
   }
 
    /**
    * onSearch
    * --------
-   * Aplica los filtros de forma independiente (fecha, producto, broker).
-   * Los filtros pueden usarse solos o combinados.
+   * Applies filters independently (date, product, broker).
+   * Filters can be used alone or combined.
    */
   onSearch(): void {
-    if (!this.fechaDesde && !this.fechaHasta && !this.selectedpaymentChannel) {
+    if (!this.dateFrom && !this.dateTo && !this.selectedPaymentChannel) {
       this.applyCurrentMonthFilter();
       return;
     }
     
-    if (this.fechaDesde && this.fechaHasta) {
-      if (!this.validateDateRange(this.fechaDesde, this.fechaHasta)) {
+    if (this.dateFrom && this.dateTo) {
+      if (!this.validateDateRange(this.dateFrom, this.dateTo)) {
         alert('El rango de fechas no puede ser mayor a 3 meses');
         return;
       }
@@ -422,30 +436,30 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     
     let filteredData = [...this.originalData];
     
-      if (this.fechaDesde) {
-    const fechaDesdeDate = this.datePipe.convertToDate(this.fechaDesde) as Date;
-    fechaDesdeDate.setHours(0, 0, 0, 0);
+      if (this.dateFrom) {
+    const dateFromDate = this.datePipe.convertToDate(this.dateFrom) as Date;
+    dateFromDate.setHours(0, 0, 0, 0);
     
     filteredData = filteredData.filter(item => {
       const itemDate = new Date(item._rawData.revenueDate);
-      return itemDate >= fechaDesdeDate;
+      return itemDate >= dateFromDate;
     });
   }
   
-  if (this.fechaHasta) {
-    const fechaHastaDate = this.datePipe.convertToDate(this.fechaHasta) as Date;
-    fechaHastaDate.setHours(23, 59, 59, 999);
+  if (this.dateTo) {
+    const dateToDate = this.datePipe.convertToDate(this.dateTo) as Date;
+    dateToDate.setHours(23, 59, 59, 999);
     
     filteredData = filteredData.filter(item => {
       const itemDate = new Date(item._rawData.revenueDate);
-      return itemDate <= fechaHastaDate;
+      return itemDate <= dateToDate;
     });
   }
     
-    if (this.selectedpaymentChannel) {
+    if (this.selectedPaymentChannel) {
 
       filteredData = filteredData.filter(item =>
-        this.normalizeString(item._rawData.paymentChannel).includes(this.normalizeString(this.getPaymentChannel(this.selectedpaymentChannel)))
+        this.normalizeString(item._rawData.paymentChannel).includes(this.normalizeString(this.getPaymentChannel(this.selectedPaymentChannel)))
       );
     }
     
@@ -474,22 +488,22 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   /**
    * validateDateRange
    * -----------------
-   * Valida que el rango de fechas no sea mayor a 3 meses
+   * Validates that the date range is not greater than 3 months
    */
-  private validateDateRange(fechaDesde: string, fechaHasta: string): boolean {
-    const desde = this.datePipe.convertToDate(fechaDesde) as Date;
-    const hasta = this.datePipe.convertToDate(fechaHasta) as Date;
+  private validateDateRange(dateFrom: string, dateTo: string): boolean {
+    const from = this.datePipe.convertToDate(dateFrom) as Date;
+    const to = this.datePipe.convertToDate(dateTo) as Date;
   
-    const monthsDiff = (hasta.getFullYear() - desde.getFullYear()) * 12 + 
-                     (hasta.getMonth() - desde.getMonth());
+    const monthsDiff = (to.getFullYear() - from.getFullYear()) * 12 + 
+                     (to.getMonth() - from.getMonth());
   
-    return monthsDiff <= 3 && hasta >= desde;
+    return monthsDiff <= 3 && to >= from;
   }
   /**
  * formatDateTimeManual
  * --------------------
- * Formatea una fecha manualmente para preservar la hora
- * Formato: dd/MM/yyyy - H:mm:ss
+ * Manually formats a date to preserve the time
+ * Format: dd/MM/yyyy - H:mm:ss
  */
 private formatDateTimeManual(date: Date): string {
   const day = date.getDate().toString().padStart(2, '0');

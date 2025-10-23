@@ -28,11 +28,11 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   
   private initializeMobileCardConfig(): void {
     this.mobileCardConfig = {
-      headerKey: 'nombreProveedor',
+      headerKey: 'providerName',
       fields: [
-        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL'), key: 'canal' },
-        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE'), key: 'activo' },
-        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION'), key: 'descripcion' }
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL'), key: 'channel' },
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE'), key: 'active' },
+        { label: this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION'), key: 'description' }
       ],
       showActionButton: true,
       actionIcon: 'eye'
@@ -49,10 +49,10 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   originalData: any[] = [];
   columns = [
     'logo',
-    'nombreProveedor',
-    'canal',
-    'activo',
-    'descripcion'
+    'providerName',
+    'channel',
+    'active',
+    'description'
   ];
   
   actions = ['detail'];
@@ -82,10 +82,10 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
           return {
             id: prov.id,
             logo: 'LOGO_PLACEHOLDER',
-            nombreProveedor: prov.name,
-            canal: prov.paymentChannels,
-            activo: this.isActive(prov.isActive),
-            descripcion: prov.description,
+            providerName: prov.name,
+            channel: prov.paymentChannels,
+            active: this.isActive(prov.isActive),
+            description: prov.description,
             _rawData: prov
             };
           });  
@@ -102,7 +102,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
  
 
   /**
-   * Paginación
+   * Pagination
    */
   onPageChange(page: number) {
     this.currentPages = page;
@@ -176,10 +176,10 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
       ['logo', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.LOGO')],
-      ['nombreProveedor', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PROVIDEER')],
-      ['canal', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL')],
-      ['activo', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE')],
-      ['descripcion', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION')]
+      ['providerName', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PROVIDEER')],
+      ['channel', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL')],
+      ['active', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE')],
+      ['description', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.DESCRIPTION')]
     ]);
     this.cdr.detectChanges();
   }

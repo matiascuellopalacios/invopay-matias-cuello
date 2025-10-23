@@ -4,6 +4,10 @@
     <!-- Title Section -->
     <div class="sales-list__title-section">
       <h1 class="sales-list__title">{{ 'IP.SELLS_LIST.TITLE' | translate }}</h1>
+      <button type="button" class="sales-list__mobile-filter-btn" (click)="openMobileFilters()">
+        <img src="../../../assets/icons/search.svg" alt="Buscar">
+        {{ 'IP.SELLS_LIST.FILTERS.TITLE' | translate }}
+      </button>
     </div>
 
     <!-- Filters Section -->
@@ -22,9 +26,9 @@
     type="date" 
     id="fecha-desde" 
     class="sales-list__filter-input" 
-    [(ngModel)]="fechaDesde"
+    [(ngModel)]="dateFrom"
     [max]="maxDate"
-    (change)="onFechaDesdeChange($event)"
+    (change)="onDateFromChange($event)"
     [placeholder]="'IP.SELLS_LIST.FILTERS.SELECT_DATE' | translate"/>
 </div>
 
@@ -34,17 +38,17 @@
     type="date" 
     id="fecha-hasta" 
     class="sales-list__filter-input" 
-    [(ngModel)]="fechaHasta"
-    [min]="minDateHasta"
+    [(ngModel)]="dateTo"
+    [min]="minDateTo"
     [max]="maxDate"
-    (change)="onFechaHastaChange($event)"
+    (change)="onDateToChange($event)"
     [placeholder]="'IP.SELLS_LIST.FILTERS.SELECT_DATE' | translate"/>
 </div>
         
         <div class="sales-list__filter-actions">
-          <button class="btn btn--search" (click)="onSearch()">
+          <button class="btn btn--search" (click)="onSearch()" [disabled]="isSearchDisabled" [class.btn--disabled]="isSearchDisabled">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
           <button class="btn btn--search" (click)="openFilters()">
@@ -114,42 +118,82 @@
     </div>
   </div>
 </div>
-<!-- Modal para filtros -->
-<div class="sales-list__filters-modal" *ngIf="showFiltersModal">
-  <div class="sales-list__filters-modal-content">
 
-    <h3>{{ 'IP.SELLS_LIST.MODAL.TITTLE' | translate }}</h3>
-
-    <!-- Fila de Producto y Broker -->
-    <div class="filters-row-modal">
-      <div class="filter-group-modal filter-group-modal--floating">
-        <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.PRODUCT' | translate }}</label>
-        <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedProduct">
-          <option value="">{{ 'IP.SELLS_LIST.FILTERS.PRODUCTS_PLACEHOLDER' | translate }}</option>
-          <option value="Seguro de Vida Total">{{ 'IP.SELLS_LIST.PRODUCTS.HEALTH_INSURANCE' | translate }}</option>
-          <option value="Seguro de Hogar Premium">{{ 'IP.SELLS_LIST.PRODUCTS.HOME_INSURANCE' | translate }}</option>
-          <option value="Seguro Automotor Plus">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
-          <option value="Seguro de Accidentes Personales">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
-        </select>
-      </div>
-
-      <div class="filter-group-modal filter-group-modal--floating">
-        <label for="broker-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.BROKER' | translate }}</label>
-        <select id="broker-modal" class="filter-select-modal--floating" [(ngModel)]="selectedBroker">
-          <option value="">{{ 'IP.SELLS_LIST.FILTERS.BROKERS_PLACEHOLDER' | translate }}</option>
-          <option value="juan-perez">{{ 'IP.SELLS_LIST.BROKERS.JUAN_PEREZ' | translate }}</option>
-          <option value="Sofía Gómez">{{ 'IP.SELLS_LIST.BROKERS.SOFIA_GOMEZ' | translate }}</option>
-          <option value="María Rodríguez">{{ 'IP.SELLS_LIST.BROKERS.MARIA_RODRIGUEZ' | translate }}</option>
-        </select>
-      </div>
+<!-- Modal de filtros adicionales (Producto/Broker) -->
+<app-additional-filters-modal
+  [open]="showFiltersModal"
+  [title]="'IP.SELLS_LIST.MODAL.TITTLE' | translate"
+  [clearLabel]="'IP.SELLS_LIST.MODAL.CLEAR' | translate"
+  [cancelLabel]="'IP.SELLS_LIST.MODAL.CANCEL' | translate"
+  [applyLabel]="'IP.SELLS_LIST.MODAL.APPLY' | translate"
+  (openChange)="showFiltersModal = $event"
+  (clear)="onClearFilters()"
+  (cancel)="closeFilters()"
+  (apply)="applyModalFilters()">
+  
+  <div class="filters-row-modal">
+    <div class="filter-group-modal filter-group-modal--floating">
+      <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.PRODUCT' | translate }}</label>
+      <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedProduct">
+        <option value="">{{ 'IP.SELLS_LIST.FILTERS.PRODUCTS_PLACEHOLDER' | translate }}</option>
+        <option value="Seguro de Vida Total">{{ 'IP.SELLS_LIST.PRODUCTS.HEALTH_INSURANCE' | translate }}</option>
+        <option value="Seguro de Hogar Premium">{{ 'IP.SELLS_LIST.PRODUCTS.HOME_INSURANCE' | translate }}</option>
+        <option value="Seguro Automotor Plus">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
+        <option value="Seguro de Accidentes Personales">{{ 'IP.SELLS_LIST.PRODUCTS.AUTO_INSURANCE' | translate }}</option>
+      </select>
     </div>
 
-    <!-- Botones -->
-    <div class="filter-actions-modal">
-      <button class="btn btn--clear" (click)="onClearFilters()">{{ 'IP.SELLS_LIST.MODAL.CLEAR' | translate }}</button>
-      <button class="btn btn--cancel" (click)="closeFilters()">{{ 'IP.SELLS_LIST.MODAL.CANCEL' | translate }}</button>
-      <button class="btn btn--apply" (click)="applyModalFilters()">{{ 'IP.SELLS_LIST.MODAL.APPLY' | translate }}</button>
+    <div class="filter-group-modal filter-group-modal--floating">
+      <label for="broker-modal" class="filter-label-modal--floating">{{ 'IP.SELLS_LIST.FILTERS.BROKER' | translate }}</label>
+      <select id="broker-modal" class="filter-select-modal--floating" [(ngModel)]="selectedBroker">
+        <option value="">{{ 'IP.SELLS_LIST.FILTERS.BROKERS_PLACEHOLDER' | translate }}</option>
+        <option value="juan-perez">{{ 'IP.SELLS_LIST.BROKERS.JUAN_PEREZ' | translate }}</option>
+        <option value="Sofía Gómez">{{ 'IP.SELLS_LIST.BROKERS.SOFIA_GOMEZ' | translate }}</option>
+        <option value="María Rodríguez">{{ 'IP.SELLS_LIST.BROKERS.MARIA_RODRIGUEZ' | translate }}</option>
+      </select>
     </div>
-
   </div>
-</div>
+</app-additional-filters-modal>
+
+<!-- Modal mobile con fechas -->
+<app-mobile-date-filters-modal
+  [open]="showMobileFiltersModal"
+  [title]="'IP.SELLS_LIST.FILTERS.TITLE' | translate"
+  (openChange)="showMobileFiltersModal = $event">
+  
+  <div class="mobile-filters-content">
+    <div class="sales-list__filter-group">
+      <label for="fecha-desde-mobile" class="sales-list__filter-label">{{ 'IP.SELLS_LIST.FILTERS.DATE_FROM' | translate }}</label>
+      <input 
+        type="date" 
+        id="fecha-desde-mobile"
+        class="sales-list__filter-input"
+        [(ngModel)]="dateFrom"
+        [max]="maxDate"
+        (change)="onDateFromChange($event)"/>
+    </div>
+
+    <div class="sales-list__filter-group">
+      <label for="fecha-hasta-mobile" class="sales-list__filter-label">{{ 'IP.SELLS_LIST.FILTERS.DATE_TO' | translate }}</label>
+      <input 
+        type="date" 
+        id="fecha-hasta-mobile"
+        class="sales-list__filter-input"
+        [(ngModel)]="dateTo"
+        [min]="minDateTo"
+        [max]="maxDate"
+        (change)="onDateToChange($event)"/>
+    </div>
+    
+    <div class="mobile-filters-content__actions">
+      <button class="btn btn--search" (click)="onSearch()" [disabled]="isSearchDisabled">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn btn--filter" (click)="openFilters()">
+        <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
+      </button>
+    </div>
+  </div>
+</app-mobile-date-filters-modal>

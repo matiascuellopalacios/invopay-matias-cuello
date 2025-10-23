@@ -3,6 +3,10 @@
     <!-- Title Section -->
     <div class="revenue-list__title-section">
       <h1 class="revenue-list__title">{{ 'IP.REVENUE_LIST.TITLE' | translate }}</h1>
+      <button type="button" class="revenue-list__mobile-filter-btn" (click)="openMobileFilters()">
+        <img src="../../../assets/icons/search.svg" alt="Buscar">
+        {{ 'IP.REVENUE_LIST.FILTERS.TITLE' | translate }}
+      </button>
     </div>
 
     <!-- Filters Section -->
@@ -21,9 +25,9 @@
     type="date" 
     id="fecha-desde" 
     class="revenue-list__filter-input" 
-    [(ngModel)]="fechaDesde"
+    [(ngModel)]="dateFrom"
     [max]="maxDate"
-    (change)="onFechaDesdeChange($event)"/>
+    (change)="onDateFromChange($event)"/>
 </div>
 
 <div class="revenue-list__filter-group">
@@ -32,16 +36,16 @@
     type="date" 
     id="fecha-hasta" 
     class="revenue-list__filter-input" 
-    [(ngModel)]="fechaHasta"
-    [min]="minDateHasta"
+    [(ngModel)]="dateTo"
+    [min]="minDateTo"
     [max]="maxDate"
-    (change)="onFechaHastaChange($event)"/>
+    (change)="onDateToChange($event)"/>
 </div>
         
         <div class="revenue-list__filter-actions">
-          <button class="btn btn--search" (click)="onSearch()">
+          <button class="btn btn--search" (click)="onSearch()" [disabled]="isSearchDisabled" [class.btn--disabled]="isSearchDisabled">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
           <button class="btn btn--search" (click)="openFilters()">
@@ -112,32 +116,72 @@
     </div>
   </div>
 </div>
-<!-- Modal para filtros -->
-<div class="revenue-list__filters-modal" *ngIf="showFiltersModal">
-  <div class="revenue-list__filters-modal-content">
 
-    <h3>{{ 'IP.SELLS_LIST.MODAL.TITTLE' | translate }}</h3>
-
-    <!-- Fila de Producto y Broker -->
-    <div class="filters-row-modal">
-      <div class="filter-group-modal filter-group-modal--floating">
-        <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.REVENUE_LIST.FILTERS.PAYMEN_CHANNEL' | translate }}</label>
-        <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedpaymentChannel">
-          <option value="">{{ 'IP.REVENUE_LIST.PAYMENT_PLAYCEHOLDER' | translate }}</option>
-          <option value="BOLETO">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.TICKET' | translate }}</option>
-          <option value="TARJETA">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.CARD' | translate }}</option>
-          <option value="CHEQUE">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.BANK_TRANSFER' | translate }}</option>
-          <option value="TRANSFERENCIA">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.CHECK' | translate }}</option>
-        </select>
-      </div>
+<!-- Modal de filtros adicionales (Canal de Pago) -->
+<app-additional-filters-modal
+  [open]="showFiltersModal"
+  [title]="'IP.SELLS_LIST.MODAL.TITTLE' | translate"
+  [clearLabel]="'IP.SELLS_LIST.MODAL.CLEAR' | translate"
+  [cancelLabel]="'IP.SELLS_LIST.MODAL.CANCEL' | translate"
+  [applyLabel]="'IP.SELLS_LIST.MODAL.APPLY' | translate"
+  (openChange)="showFiltersModal = $event"
+  (clear)="onClearFilters()"
+  (cancel)="closeFilters()"
+  (apply)="applyModalFilters()">
+  
+  <div class="filters-row-modal">
+    <div class="filter-group-modal filter-group-modal--floating">
+      <label for="producto-modal" class="filter-label-modal--floating">{{ 'IP.REVENUE_LIST.FILTERS.PAYMEN_CHANNEL' | translate }}</label>
+      <select id="producto-modal" class="filter-select-modal--floating" [(ngModel)]="selectedPaymentChannel">
+        <option value="">{{ 'IP.REVENUE_LIST.PAYMENT_PLAYCEHOLDER' | translate }}</option>
+        <option value="BOLETO">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.TICKET' | translate }}</option>
+        <option value="TARJETA">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.CARD' | translate }}</option>
+        <option value="CHEQUE">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.BANK_TRANSFER' | translate }}</option>
+        <option value="TRANSFERENCIA">{{ 'IP.REVENUE_LIST.PAYMENT_CHANNELS.CHECK' | translate }}</option>
+      </select>
     </div>
-
-    <!-- Botones -->
-    <div class="filter-actions-modal">
-      <button class="btn btn--clear" (click)="onClearFilters()">{{ 'IP.SELLS_LIST.MODAL.CLEAR' | translate }}</button>
-      <button class="btn btn--cancel" (click)="closeFilters()">{{ 'IP.SELLS_LIST.MODAL.CANCEL' | translate }}</button>
-      <button class="btn btn--apply" (click)="applyModalFilters()">{{ 'IP.SELLS_LIST.MODAL.APPLY' | translate }}</button>
-    </div>
-
   </div>
-</div>
+</app-additional-filters-modal>
+
+<!-- Modal mobile con fechas -->
+<app-mobile-date-filters-modal
+  [open]="showMobileFiltersModal"
+  [title]="'IP.REVENUE_LIST.FILTERS.TITLE' | translate"
+  (openChange)="showMobileFiltersModal = $event">
+  
+  <div class="mobile-filters-content">
+    <div class="revenue-list__filter-group">
+      <label for="fecha-desde-mobile" class="revenue-list__filter-label">{{ 'IP.REVENUE_LIST.FILTERS.DATE_FROM' | translate }}</label>
+      <input 
+        type="date" 
+        id="fecha-desde-mobile"
+        class="revenue-list__filter-input"
+        [(ngModel)]="dateFrom"
+        [max]="maxDate"
+        (change)="onDateFromChange($event)"/>
+    </div>
+
+    <div class="revenue-list__filter-group">
+      <label for="fecha-hasta-mobile" class="revenue-list__filter-label">{{ 'IP.REVENUE_LIST.FILTERS.DATE_TO' | translate }}</label>
+      <input 
+        type="date" 
+        id="fecha-hasta-mobile"
+        class="revenue-list__filter-input"
+        [(ngModel)]="dateTo"
+        [min]="minDateTo"
+        [max]="maxDate"
+        (change)="onDateToChange($event)"/>
+    </div>
+    
+    <div class="mobile-filters-content__actions">
+      <button class="btn btn--search" (click)="onSearch()" [disabled]="isSearchDisabled">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button class="btn btn--filter" (click)="openFilters()">
+        <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="revenue-list__filters-icon">
+      </button>
+    </div>
+  </div>
+</app-mobile-date-filters-modal>

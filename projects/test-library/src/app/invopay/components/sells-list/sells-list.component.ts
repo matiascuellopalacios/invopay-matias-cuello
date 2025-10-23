@@ -29,11 +29,11 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   
   columns = [
     'paymentDate',
-    'nombreProducto',
+    'productName',
     'broker',
-    'cliente',
-    'montoPoliza',
-    'montoPrima'
+    'client',
+    'policyAmount',
+    'premiumAmount'
   ];
   
   actions = ['detail'];
@@ -47,18 +47,23 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   showPaginator: boolean = true;
   
   showFiltersModal = false;
+  showMobileFiltersModal = false;
   selectedProduct: string = '';
   selectedBroker: string = '';
-  fechaDesde: string = '';
-  fechaHasta: string = '';
+  dateFrom: string = '';
+  dateTo: string = '';
   
   maxDate: string = '';
-  minDateHasta: string = '';
+  minDateTo: string = '';
   
   paginatorKey: number = 0;
   isLoading: boolean = false;
   
   mobileCardConfig!: CardConfig;
+
+  get isSearchDisabled(): boolean {
+    return !this.dateFrom && !this.dateTo && !this.selectedProduct && !this.selectedBroker;
+  }
   
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -90,11 +95,11 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     this.mobileCardConfig = {
       headerKey: 'paymentDate',
       fields: [
-        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME'), key: 'nombreProducto' },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME'), key: 'productName' },
         { label: this.translate.instant('IP.SELLS_LIST.TABLE.BROKER_NAME'), key: 'broker' },
-        { label: this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME'), key: 'cliente' },
-        { label: this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT'), key: 'montoPoliza', highlight: true, isAmount: true },
-        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT'), key: 'montoPrima' }
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME'), key: 'client' },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT'), key: 'policyAmount', highlight: true, isAmount: true },
+        { label: this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT'), key: 'premiumAmount' }
       ],
       showActionButton: true,
       actionIcon: 'eye'
@@ -104,7 +109,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * setMaxDate
    * ----------
-   * Establece la fecha máxima como el día de hoy
+   * Sets the maximum date as today
    */
   private setMaxDate(): void {
     const today = new Date();
@@ -114,7 +119,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * formatDateToYYYYMMDD
    * --------------------
-   * Convierte una fecha a formato YYYY-MM-DD para los inputs de tipo date
+   * Converts a date to YYYY-MM-DD format for date type inputs
    */
   private formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
@@ -126,7 +131,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * loadSalesFromBackend
    * --------------------
-   * Carga los datos desde el backend y los mapea a la estructura del componente.
+   * Loads data from the backend and maps it to the component structure.
    */
   private loadSalesFromBackend(): void {
     this.isLoading = true;
@@ -141,11 +146,11 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
             return {
               id: sale.id,
               paymentDate: this.formatDateToDDMMYYYY(sale.saleDate),
-              nombreProducto: sale.productName,
+              productName: sale.productName,
               broker: sale.brokerName,
-              cliente: sale.customerName,
-              montoPoliza: this.amountPipe.transform(sale.policyAmount, true, symbol, sale.currency),
-              montoPrima: this.amountPipe.transform(sale.premiumAmount, true, symbol, sale.currency),
+              client: sale.customerName,
+              policyAmount: this.amountPipe.transform(sale.policyAmount, true, symbol, sale.currency),
+              premiumAmount: this.amountPipe.transform(sale.premiumAmount, true, symbol, sale.currency),
               _rawData: sale
             };
           });
@@ -159,7 +164,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Error al cargar las ventas:', error);
+          console.error('Error loading sales:', error);
           this.isLoading = false;
           this.data = [];
           this.originalData = [];
@@ -173,7 +178,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * formatDateToDDMMYYYY
    * --------------------
-   * Convierte una fecha del backend (ISO string o formato yyyy-MM-dd) a formato DD/MM/YYYY.
+   * Converts a date from the backend (ISO string or yyyy-MM-dd format) to DD/MM/YYYY format.
    */
   private formatDateToDDMMYYYY(dateString: string): string {
     if (!dateString) return '';
@@ -189,7 +194,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * applyCurrentMonthFilter
    * -----------------------
-   * Filtra los datos del mes actual sin modificar los inputs.
+   * Filters data for the current month without modifying the inputs.
    */
   private applyCurrentMonthFilter(): void {
     const now = new Date();
@@ -210,11 +215,11 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
       ['paymentDate', this.translate.instant('IP.SELLS_LIST.TABLE.SALE_DATE')],
-      ['nombreProducto', this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME')],
+      ['productName', this.translate.instant('IP.SELLS_LIST.TABLE.PRODUCT_NAME')],
       ['broker', this.translate.instant('IP.SELLS_LIST.TABLE.BROKER_NAME')],
-      ['cliente', this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME')],
-      ['montoPoliza', this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT')],
-      ['montoPrima', this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT')],
+      ['client', this.translate.instant('IP.SELLS_LIST.TABLE.CLIENT_NAME')],
+      ['policyAmount', this.translate.instant('IP.SELLS_LIST.TABLE.POLICY_AMOUNT')],
+      ['premiumAmount', this.translate.instant('IP.SELLS_LIST.TABLE.PREMIUM_AMOUNT')],
     ]);
     this.cdr.detectChanges();
   }
@@ -222,19 +227,19 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * restoreState
    * ------------
-   * Restaura los filtros y paginación desde el service
+   * Restores filters and pagination from the service
    */
   private restoreState(): void {
     const state = this.saleServices.getState();
     if (!state) return;
 
-    this.fechaDesde = state.fechaDesde;
-    this.fechaHasta = state.fechaHasta;
+    this.dateFrom = state.dateFrom;
+    this.dateTo = state.dateTo;
     this.selectedProduct = state.selectedProduct;
     this.selectedBroker = state.selectedBroker;
     
-    if (this.fechaDesde) {
-      this.minDateHasta = this.fechaDesde;
+    if (this.dateFrom) {
+      this.minDateTo = this.dateFrom;
     }
     
     this.data = state.filteredData;
@@ -251,14 +256,14 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * saveCurrentState
    * ----------------
-   * Guarda el estado actual de filtros y paginación
+   * Saves the current state of filters and pagination
    */
   private saveCurrentState(): void {
     const state: SellsListState = {
       currentPage: this.currentPages,
       itemsPerPage: this.itemsPerPage,
-      fechaDesde: this.fechaDesde,
-      fechaHasta: this.fechaHasta,
+      dateFrom: this.dateFrom,
+      dateTo: this.dateTo,
       selectedProduct: this.selectedProduct,
       selectedBroker: this.selectedBroker,
       filteredData: [...this.data]
@@ -268,7 +273,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   }
   
   /**
-   * Paginación
+   * Pagination
    */
   onPageChange(page: number) {
     this.currentPages = page;
@@ -315,7 +320,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
         aValue = this.parseDateFromString(aValue);
         bValue = this.parseDateFromString(bValue);
       }
-      if (key === 'montoPoliza' || key === 'montoPrima') {
+      if (key === 'policyAmount' || key === 'premiumAmount') {
         aValue = this.parseAmount(aValue);
         bValue = this.parseAmount(bValue);
       }
@@ -349,47 +354,47 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   }
 
   /**
-   * onFechaDesdeChange
-   * ------------------
-   * Maneja el cambio en la fecha "desde" y actualiza la fecha mínima para "hasta"
+   * onDateFromChange
+   * ----------------
+   * Handles the change in the "from" date and updates the minimum date for "to"
    */
-  onFechaDesdeChange(event: any): void {
-    this.fechaDesde = event.target.value;
+  onDateFromChange(event: any): void {
+    this.dateFrom = event.target.value;
     
-    if (this.fechaDesde) {
-      this.minDateHasta = this.fechaDesde;
+    if (this.dateFrom) {
+      this.minDateTo = this.dateFrom;
       
-      if (this.fechaHasta && this.fechaHasta < this.fechaDesde) {
-        this.fechaHasta = '';
+      if (this.dateTo && this.dateTo < this.dateFrom) {
+        this.dateTo = '';
       }
     } else {
-      this.minDateHasta = '';
+      this.minDateTo = '';
     }
   }
   
   /**
-   * onFechaHastaChange
-   * ------------------
-   * Maneja el cambio en la fecha "hasta"
+   * onDateToChange
+   * --------------
+   * Handles the change in the "to" date
    */
-  onFechaHastaChange(event: any): void {
-    this.fechaHasta = event.target.value;
+  onDateToChange(event: any): void {
+    this.dateTo = event.target.value;
   }
   
   /**
    * onSearch
    * --------
-   * Aplica los filtros de forma independiente (fecha, producto, broker).
-   * Los filtros pueden usarse solos o combinados.
+   * Applies filters independently (date, product, broker).
+   * Filters can be used alone or combined.
    */
   onSearch(): void {
-    if (!this.fechaDesde && !this.fechaHasta && !this.selectedProduct && !this.selectedBroker) {
+    if (!this.dateFrom && !this.dateTo && !this.selectedProduct && !this.selectedBroker) {
       this.applyCurrentMonthFilter();
       return;
     }
     
-    if (this.fechaDesde && this.fechaHasta) {
-      if (!this.validateDateRange(this.fechaDesde, this.fechaHasta)) {
+    if (this.dateFrom && this.dateTo) {
+      if (!this.validateDateRange(this.dateFrom, this.dateTo)) {
         alert('El rango de fechas no puede ser mayor a 3 meses');
         return;
       }
@@ -397,25 +402,25 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     
     let filteredData = [...this.originalData];
     
-    if (this.fechaDesde) {
-      const fechaDesdeDate = this.parseDate(this.fechaDesde);
+    if (this.dateFrom) {
+      const dateFromDate = this.parseDate(this.dateFrom);
       filteredData = filteredData.filter(item => {
         const itemDate = this.parseDateFromString(item.paymentDate);
-        return itemDate >= fechaDesdeDate;
+        return itemDate >= dateFromDate;
       });
     }
     
-    if (this.fechaHasta) {
-      const fechaHastaDate = this.parseDate(this.fechaHasta);
+    if (this.dateTo) {
+      const dateToDate = this.parseDate(this.dateTo);
       filteredData = filteredData.filter(item => {
         const itemDate = this.parseDateFromString(item.paymentDate);
-        return itemDate <= fechaHastaDate;
+        return itemDate <= dateToDate;
       });
     }
     
     if (this.selectedProduct) {
       filteredData = filteredData.filter(item => 
-        this.normalizeString(item.nombreProducto).includes(this.normalizeString(this.getProductName(this.selectedProduct)))
+        this.normalizeString(item.productName).includes(this.normalizeString(this.getProductName(this.selectedProduct)))
       );
     }
     
@@ -434,29 +439,29 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * validateDateRange
    * -----------------
-   * Valida que el rango de fechas no sea mayor a 3 meses
+   * Validates that the date range is not greater than 3 months
    */
-  private validateDateRange(fechaDesde: string, fechaHasta: string): boolean {
-    const desde = this.parseDate(fechaDesde);
-    const hasta = this.parseDate(fechaHasta);
+  private validateDateRange(dateFrom: string, dateTo: string): boolean {
+    const from = this.parseDate(dateFrom);
+    const to = this.parseDate(dateTo);
     
-    const monthsDiff = (hasta.getFullYear() - desde.getFullYear()) * 12 + 
-                       (hasta.getMonth() - desde.getMonth());
+    const monthsDiff = (to.getFullYear() - from.getFullYear()) * 12 + 
+                       (to.getMonth() - from.getMonth());
     
-    return monthsDiff <= 3 && hasta >= desde;
+    return monthsDiff <= 3 && to >= from;
   }
   
   /**
    * onClearFilters
    * --------------
-   * Limpia todos los filtros y vuelve a mostrar los datos del mes actual
+   * Clears all filters and displays the current month's data again
    */
   onClearFilters(): void {
-    this.fechaDesde = '';
-    this.fechaHasta = '';
+    this.dateFrom = '';
+    this.dateTo = '';
     this.selectedProduct = '';
     this.selectedBroker = '';
-    this.minDateHasta = '';
+    this.minDateTo = '';
     
     this.applyCurrentMonthFilter();
   }
@@ -473,11 +478,19 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     this.onSearch();
     this.closeFilters();
   }
+
+  openMobileFilters(): void {
+    this.showMobileFiltersModal = true;
+  }
+  
+  closeMobileFilters(): void {
+    this.showMobileFiltersModal = false;
+  }
   
   /**
    * parseDate
    * ---------
-   * Convierte un string en formato YYYY-MM-DD a objeto Date
+   * Converts a string in YYYY-MM-DD format to a Date object
    */
   private parseDate(dateString: string): Date {
     const [year, month, day] = dateString.split('-').map(Number);
@@ -487,7 +500,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   /**
    * parseDateFromString
    * -------------------
-   * Convierte un string en formato DD/MM/YYYY a objeto Date
+   * Converts a string in DD/MM/YYYY format to a Date object
    */
   private parseDateFromString(dateString: string): Date {
     const [day, month, year] = dateString.split('/').map(Number);
@@ -522,7 +535,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   
   
   onViewDetail(row: any): void {
-    console.log('Ver detalle de:', row.id);
+    console.log('View detail of:', row.id);
     this.navigatingToDetail = true;
     this.saveCurrentState();
     localStorage.setItem('idSale', JSON.stringify(row.id));

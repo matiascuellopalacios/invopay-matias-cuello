@@ -13,7 +13,14 @@ export class MobileCardListComponent {
   @Input() showNoData: boolean = false;
   @Output() cardAction = new EventEmitter<any>();
 
+  showMenuForItem: any = null;
+
+  toggleMenu(item: any): void {
+    this.showMenuForItem = this.showMenuForItem === item ? null : item;
+  }
+
   onCardAction(item: any): void {
+    this.showMenuForItem = null; 
     this.cardAction.emit(item);
   }
 }

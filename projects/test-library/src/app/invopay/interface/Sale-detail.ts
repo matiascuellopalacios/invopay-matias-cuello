@@ -46,46 +46,46 @@ export interface SaleDetail {
 
 export interface SaleListItem {
   id: number;
-  fechaVenta: string;
-  nombreProducto: string;
+  saleDate: string;
+  productName: string;
   broker: string;
-  cliente: string;
-  montoPoliza: string;
-  montoPrima: string;
-  detalle: string;
+  client: string;
+  policyAmount: string;
+  premiumAmount: string;
+  detail: string;
   _rawData: SaleDetail; 
 }
 
 
-export interface SaleDetail {
-  fechaVenta: string;
-  numeroPoliza: string;
-  nombreProducto: string;
-  montoPoliza: string;
-  montoPrima: string;
-  comisionValor: string;
-  comisionBroker: string;
-  frecuenciaPago: string;
-  cliente: string;
+export interface SaleDetailView {
+  saleDate: string;
+  policyNumber: string;
+  productName: string;
+  policyAmount: string;
+  premiumAmount: string;
+  commissionValue: string;
+  brokerCommission: string;
+  paymentFrequency: string;
+  client: string;
   email: string;
-  telefono: string;
+  phone: string;
 }
 
 export interface PaymentPlanItem {
-  numeroCuota: number;
-  valorCuota: string;
-  fechaVencimiento: string;
-  estadoPago: string;
-  fechaPago: string;
-  comisionPagada: string;
-  valorComision: string;
+  installmentNumber: number;
+  installmentValue: string;
+  dueDate: string;
+  paymentStatus: string;
+  paymentDate: string;
+  paidCommission: string;
+  commissionValue: string;
 }
 
-export interface SellsListState {
+export interface SellsListStateOld {
   currentPage: number;
   itemsPerPage: number;
-  fechaDesde: string;
-  fechaHasta: string;
+  dateFrom: string;
+  dateTo: string;
   selectedProduct: string;
   selectedBroker: string;
   filteredData: SaleListItem[];

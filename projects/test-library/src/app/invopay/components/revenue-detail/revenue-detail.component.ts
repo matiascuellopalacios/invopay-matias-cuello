@@ -38,9 +38,9 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   mobileCardConfig!: CardConfig;
   data: any[] = []
   columns=[
-    'nCuota',
-    'fechaVencimiento',
-    'valorPago'
+    'installmentNumber',
+    'dueDate',
+    'paymentValue'
   ]
   ngOnInit(): void {
     this.initializeTranslations();
@@ -60,11 +60,11 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   
   private initializeMobileCardConfig(): void {
     this.mobileCardConfig = {
-      headerKey: 'nCuota',
+      headerKey: 'installmentNumber',
       headerLabel: this.translate.instant('IP.REVENUE_DETAIL.TABLE.N_PAYMENTS'),
       fields: [
-        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.DATE_EXPIRY'), key: 'fechaVencimiento' },
-        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.PAYMENT_VALUE'), key: 'valorPago', highlight: true, isAmount: true }
+        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.DATE_EXPIRY'), key: 'dueDate' },
+        { label: this.translate.instant('IP.REVENUE_DETAIL.TABLE.PAYMENT_VALUE'), key: 'paymentValue', highlight: true, isAmount: true }
       ],
       showActionButton: false
     };
@@ -74,13 +74,13 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
     localStorage.removeItem('idRevenue');
   }
   /**
-   * Volver a la lista de recaudaciones
+   * Go back to revenue list
    */
   goBack(){
     this.router.navigate(['/invopay/revenue-list']);
   }
   /**
-   * Cargar el detalle de la recaudacion
+   * Load revenue detail
    */
   loadDetail(){
     const sub=this.revenueService.getRevenueById(this.revenueId).subscribe({
@@ -99,9 +99,9 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
           this.revenueDetail.policyData.premiumAmount = this.amountPipe.transform(res.policyData.premiumAmount, true, symbol, res.transactionData.currency);
           this.data = this.revenueDetail.policyData.premiumPaymentPlan.map((item: any) => {
           return {
-          nCuota: item.installmentNumber,
-          fechaVencimiento: this.datePipe.transform(item.dueDate),
-          valorPago: this.amountPipe.transform(item.amount, true, symbol, this.revenueDetail.transactionData.currency)
+          installmentNumber: item.installmentNumber,
+          dueDate: this.datePipe.transform(item.dueDate),
+          paymentValue: this.amountPipe.transform(item.amount, true, symbol, this.revenueDetail.transactionData.currency)
         };
        
       });
@@ -115,7 +115,7 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
     this.subscription.add(sub);
   }
   /**
-   * Paginación
+   * Pagination
    */
   onPageChange(page: number) {
     this.currentPages = page;
@@ -136,17 +136,17 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
    */
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
-      ['nCuota', this.translate.instant('IP.REVENUE_DETAIL.TABLE.N_PAYMENTS')],
-      ['fechaVencimiento', this.translate.instant('IP.REVENUE_DETAIL.TABLE.DATE_EXPIRY')],
-      ['valorPago', this.translate.instant('IP.REVENUE_DETAIL.TABLE.PAYMENT_VALUE')]
+      ['installmentNumber', this.translate.instant('IP.REVENUE_DETAIL.TABLE.N_PAYMENTS')],
+      ['dueDate', this.translate.instant('IP.REVENUE_DETAIL.TABLE.DATE_EXPIRY')],
+      ['paymentValue', this.translate.instant('IP.REVENUE_DETAIL.TABLE.PAYMENT_VALUE')]
     ]);
     this.cdr.detectChanges();
   }
    /**
  * formatDateTimeManual
  * --------------------
- * Formatea una fecha manualmente para preservar la hora
- * Formato: dd/MM/yyyy - H:mm:ss
+ * Manually formats a date to preserve the time
+ * Format: dd/MM/yyyy - H:mm:ss
  */
 private formatDateTimeManual(date: Date): string {
   const day = date.getDate().toString().padStart(2, '0');

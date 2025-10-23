@@ -23,6 +23,8 @@ import { RevenueListComponent } from './invopay/components/revenue-list/revenue-
 import { RevenueDetailComponent } from './invopay/components/revenue-detail/revenue-detail.component';
 import { TokenInterceptor } from './invopay/services/token.interceptor';
 import { PaymentsEntitiesListComponent } from './invopay/components/payments-entities-list/payments-entities-list.component';
+import { AdditionalFiltersModalComponent } from './invopay/components/additional-filters-modal/additional-filters-modal.component';
+import { MobileDateFiltersModalComponent } from './invopay/components/mobile-date-filters-modal/mobile-date-filters-modal.component';
 
 
   export function HttpLoaderFactory(http: HttpClient) {
@@ -46,6 +48,8 @@ import { PaymentsEntitiesListComponent } from './invopay/components/payments-ent
       },
     }),
     InvopayModule,
+    AdditionalFiltersModalComponent,
+    MobileDateFiltersModalComponent,
     SharedModule
   ],
   providers: [DatePipe,AmountFormatPipe,CurrencySymbolPipe,CustomDatePipe,

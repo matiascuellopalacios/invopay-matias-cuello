@@ -1,8 +1,8 @@
 export interface SellsListState  {
   currentPage: number;
   itemsPerPage: number;
-  fechaDesde: string;
-  fechaHasta: string;
+  dateFrom: string;
+  dateTo: string;
   selectedProduct: string;
   selectedBroker: string;
   filteredData: any[];
@@ -10,8 +10,8 @@ export interface SellsListState  {
 export interface RevenueListState  {
   currentPage: number;
   itemsPerPage: number;
-  fechaDesde: string;
-  fechaHasta: string;
+  dateFrom: string;
+  dateTo: string;
   selectedChanelPayment: string;
   filteredData: any[];
 }

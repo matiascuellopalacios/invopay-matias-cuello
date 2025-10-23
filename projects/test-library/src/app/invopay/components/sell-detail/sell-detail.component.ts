@@ -33,15 +33,15 @@ export class SellDetailComponent implements OnInit,OnDestroy {
   
   private initializeMobileCardConfig(): void {
     this.mobileCardConfig = {
-      headerKey: 'nCuota',
+      headerKey: 'installmentNumber',
       headerLabel: this.translate.instant('IP.SELL_DETAIL.TABLE.N_PAYMENTS'),
       fields: [
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_VALUE'), key: 'valorCuota' },
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_EXPIRY'), key: 'fechaVencimiento' },
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_STATUS'), key: 'estadoPago' },
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_PAYMENT'), key: 'fechaPago' },
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_COMMISSION'), key: 'comisionPagada' },
-        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.COMMISSION_VALUE'), key: 'valorComision', highlight: true, isAmount: true }
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_VALUE'), key: 'installmentValue' },
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_EXPIRY'), key: 'dueDate' },
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_STATUS'), key: 'paymentStatus' },
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_PAYMENT'), key: 'paymentDate' },
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_COMMISSION'), key: 'paidCommission' },
+        { label: this.translate.instant('IP.SELL_DETAIL.TABLE.COMMISSION_VALUE'), key: 'commissionValue', highlight: true, isAmount: true }
       ],
       showActionButton: false
     };
@@ -58,20 +58,20 @@ export class SellDetailComponent implements OnInit,OnDestroy {
   private readonly currencyPipe = inject(CurrencySymbolPipe);
   private readonly sellService=inject(SellService)
   private readonly datePipe=inject(CustomDatePipe)
-  commisionValue:number=0;
-  primeValue:number=0;  
+  commissionValue:number=0;
+  premiumValue:number=0;  
   subscription=new Subscription();
   saleId:number=0;
   saleDetail:any;
   data: any[] = []
   columns = [
-    'nCuota',
-    'valorCuota',
-    'fechaVencimiento',
-    'estadoPago',
-    'fechaPago',
-    'comisionPagada',
-    'valorComision'
+    'installmentNumber',
+    'installmentValue',
+    'dueDate',
+    'paymentStatus',
+    'paymentDate',
+    'paidCommission',
+    'commissionValue'
   ];
   
   titlesFile = new Map<string, string>();
@@ -86,7 +86,7 @@ export class SellDetailComponent implements OnInit,OnDestroy {
   mobileCardConfig!: CardConfig;
 
   /**
-   * Cargar detalle
+   * Load detail
    */
   loadDetail(){
     const sub=this.sellService.getSaleById(this.saleId).subscribe({
@@ -94,23 +94,23 @@ export class SellDetailComponent implements OnInit,OnDestroy {
         console.log(res);
       this.saleDetail=res;
       const symbol = this.currencyPipe.transform(res.currency);
-      this.commisionValue=res.amount;
-      this.primeValue=res.policyData.amount;
+      this.commissionValue=res.amount;
+      this.premiumValue=res.policyData.amount;
       this.saleDetail.amount=this.amountPipe.transform(this.saleDetail.amount, true, symbol, this.saleDetail.currency)
       this.saleDetail.policyData.premiumAmount=this.amountPipe.transform(this.saleDetail.policyData.premiumAmount, true, symbol, this.saleDetail.currency)
       this.saleDetail.policyData.amount=this.amountPipe.transform(this.saleDetail.policyData.amount, true, symbol, this.saleDetail.currency)
       
       this.data = this.saleDetail.policyData.premiumPaymentPlan.map((item: any) => {
-        const commissionAmount = (item.amount * this.commisionValue) / this.primeValue;
+        const commissionAmount = (item.amount * this.commissionValue) / this.premiumValue;
         
         return {
-          nCuota: item.installmentNumber,
-          valorCuota: this.amountPipe.transform(item.amount, true, symbol, this.saleDetail.currency),
-          fechaVencimiento: this.datePipe.transform(item.dueDate),
-          estadoPago: item.isPaid ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
-          fechaPago: item.isPaid ? item.dueDate : '-',
-          comisionPagada: item.isPaid ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
-          valorComision: this.amountPipe.transform(commissionAmount, true, symbol, this.saleDetail.currency)
+          installmentNumber: item.installmentNumber,
+          installmentValue: this.amountPipe.transform(item.amount, true, symbol, this.saleDetail.currency),
+          dueDate: this.datePipe.transform(item.dueDate),
+          paymentStatus: item.isPaid ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
+          paymentDate: item.isPaid ? item.dueDate : '-',
+          paidCommission: item.isPaid ? this.translate.instant('IP.YES') : this.translate.instant('IP.NO'),
+          commissionValue: this.amountPipe.transform(commissionAmount, true, symbol, this.saleDetail.currency)
         };
       });
         this.loadData();
@@ -123,17 +123,17 @@ export class SellDetailComponent implements OnInit,OnDestroy {
   }
 
   /*
-  * Porcentaje dela poliza 
+  * Policy percentage
   */
- caluclatePolicyPercentage():string{
-  const policyAmount = this.primeValue
-  const saleAmount = this.commisionValue
+ calculatePolicyPercentage():string{
+  const policyAmount = this.premiumValue
+  const saleAmount = this.commissionValue
   const commissionPercentage = (saleAmount / policyAmount) * 100;
   return Math.round(commissionPercentage).toString();
  }
 
   /**
-   * Paginación
+   * Pagination
    */
   onPageChange(page: number) {
     this.currentPages = page;
@@ -154,13 +154,13 @@ export class SellDetailComponent implements OnInit,OnDestroy {
    */
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
-      ['nCuota', this.translate.instant('IP.SELL_DETAIL.TABLE.N_PAYMENTS')],
-      ['valorCuota', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_VALUE')],
-      ['fechaVencimiento', this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_EXPIRY')],
-      ['estadoPago', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_STATUS')],
-      ['fechaPago', this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_PAYMENT')],
-      ['comisionPagada', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_COMMISSION')],
-      ['valorComision', this.translate.instant('IP.SELL_DETAIL.TABLE.COMMISSION_VALUE')]
+      ['installmentNumber', this.translate.instant('IP.SELL_DETAIL.TABLE.N_PAYMENTS')],
+      ['installmentValue', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_VALUE')],
+      ['dueDate', this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_EXPIRY')],
+      ['paymentStatus', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_STATUS')],
+      ['paymentDate', this.translate.instant('IP.SELL_DETAIL.TABLE.DATE_PAYMENT')],
+      ['paidCommission', this.translate.instant('IP.SELL_DETAIL.TABLE.PAYMENT_COMMISSION')],
+      ['commissionValue', this.translate.instant('IP.SELL_DETAIL.TABLE.COMMISSION_VALUE')]
     ]);
     this.cdr.detectChanges();
   }
@@ -178,10 +178,10 @@ export class SellDetailComponent implements OnInit,OnDestroy {
     12: 'IP.SELL_DETAIL.FREQUENCY.MONTHLY'
   };
   
-  return frequencyMap[installments] || `${installments} cuotas`;
+  return frequencyMap[installments] || `${installments} installments`;
 }
   /**
-   * Volver a la lista de ventas
+   * Go back to sales list
    */
   goBack(){
     this.router.navigate(['/invopay/sell-list']);
