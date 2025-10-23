@@ -15,7 +15,7 @@
   }
 
   &__container {
-    max-width: 1400px;
+    max-width: 2000px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -107,32 +107,51 @@
   &__info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 15px 20px;
 
     &--single {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+      .sale-detail__field {
+        max-width: 400px;
+      }
     }
   }
 
-  &__info-item {
+  &__field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    position: relative;
+    min-width: 200px;
   }
 
-  &__info-label {
-    @include labelText();
-    font-size: 14px;
-    color: #666;
+  &__field-label {
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    background: $app-white;
+    padding: 0 6px;
+    font-size: 12px;
+    color: #000;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    z-index: 1;
+  }
 
-    svg {
-      width: 14px;
-      height: 14px;
-      fill: #666;
+  &__field-input {
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: $primary-color-text;
+    background: #F8F9FA;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 13px;
+    outline: none;
+    
+    &:focus {
+      border-color: $primary-color;
     }
   }
 

@@ -7,6 +7,7 @@ import { AmountFormatPipe } from 'projects/base/src/shared/Utils/amount-format-p
 import { CurrencySymbolPipe } from 'projects/base/src/shared/Utils/currency-simbol-pipe';
 import { CardConfig } from '../../interface/movile-table';
 import { CustomDatePipe } from 'projects/base/src/shared/Utils/pipeCustomDate';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-revenue-detail',
@@ -42,6 +43,30 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
     'dueDate',
     'paymentValue'
   ]
+
+  // Form controls deshabilitados - Transaction Data
+  revenueDateControl = new FormControl({value: '', disabled: true});
+  currencyControl = new FormControl({value: '', disabled: true});
+  providerControl = new FormControl({value: '', disabled: true});
+  paymentChannelControl = new FormControl({value: '', disabled: true});
+  transactionAmountControl = new FormControl({value: '', disabled: true});
+  observationControl = new FormControl({value: '', disabled: true});
+
+  // Form controls deshabilitados - Conciliation Data
+  productNameControl = new FormControl({value: '', disabled: true});
+  brokerNameControl = new FormControl({value: '', disabled: true});
+  isConsolidatedControl = new FormControl({value: '', disabled: true});
+  policyNumberControl = new FormControl({value: '', disabled: true});
+  paymentNumberControl = new FormControl({value: '', disabled: true});
+  policyAmountControl = new FormControl({value: '', disabled: true});
+  paymentValueControl = new FormControl({value: '', disabled: true});
+
+  // Form controls deshabilitados - Policy Data
+  saleDateControl = new FormControl({value: '', disabled: true});
+  premiumAmountControl = new FormControl({value: '', disabled: true});
+  policyNumControl = new FormControl({value: '', disabled: true});
+  policyAmtControl = new FormControl({value: '', disabled: true});
+  productControl = new FormControl({value: '', disabled: true});
   ngOnInit(): void {
     this.initializeTranslations();
     this.initializeMobileCardConfig();
@@ -97,6 +122,25 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
           this.revenueDetail.policyData.amount = this.amountPipe.transform(res.policyData.amount, true, symbol, res.transactionData.currency);
           this.revenueDetail.policyData.saleDate = this.datePipe.transform(res.policyData.saleDate);
           this.revenueDetail.policyData.premiumAmount = this.amountPipe.transform(res.policyData.premiumAmount, true, symbol, res.transactionData.currency);
+          this.revenueDateControl.setValue(this.revenueDetail.transactionData.revenueDate);
+          this.currencyControl.setValue(res.transactionData.currency);
+          this.providerControl.setValue(res.transactionData.paymentProvider);
+          this.paymentChannelControl.setValue(res.transactionData.paymentChannel);
+          this.transactionAmountControl.setValue(this.revenueDetail.transactionData.amount);
+          this.observationControl.setValue(res.transactionData.transactionObservations);
+          this.productNameControl.setValue(res.conciliationData.productName);
+          this.brokerNameControl.setValue(res.conciliationData.brokerName);
+          this.isConsolidatedControl.setValue(this.isConsolidated());
+          this.policyNumberControl.setValue(res.conciliationData.policyNumber);
+          this.paymentNumberControl.setValue(res.conciliationData.paymentNumber?.toString() || '');
+          this.policyAmountControl.setValue(this.revenueDetail.conciliationData.policyAmount);
+          this.paymentValueControl.setValue(this.revenueDetail.conciliationData.paymentValue);
+          this.saleDateControl.setValue(this.revenueDetail.policyData.saleDate);
+          this.premiumAmountControl.setValue(this.revenueDetail.policyData.premiumAmount);
+          this.policyNumControl.setValue(res.policyData.number);
+          this.policyAmtControl.setValue(this.revenueDetail.policyData.amount);
+          this.productControl.setValue(res.policyData.productName);
+
           this.data = this.revenueDetail.policyData.premiumPaymentPlan.map((item: any) => {
           return {
           installmentNumber: item.installmentNumber,

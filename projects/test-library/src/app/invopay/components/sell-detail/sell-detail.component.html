@@ -23,44 +23,44 @@
           </h2>
           
           <div class="sale-detail__info-grid">
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.SALE_DATE' | translate }}</span>
-              <span class="sale-detail__info-value">{{ saleDetail?.saleDate||'-' |customDate}}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.SALE_DATE' | translate }}</label>
+              <input type="text" [formControl]="saleDateControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.POLICY_VALUE' | translate }}</span>
-              <span class="sale-detail__info-value">{{ saleDetail?.policyData.amount||'-'}}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.POLICY_VALUE' | translate }}</label>
+              <input type="text" [formControl]="policyValueControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.COMMISSION_VALUE' | translate }}</span>
-              <span class="sale-detail__info-value">{{ saleDetail?.amount|| '-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.COMMISSION_VALUE' | translate }}</label>
+              <input type="text" [formControl]="commissionValueControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PRODUCT' | translate }}</span>
-              <span class="sale-detail__info-value">{{ saleDetail?.productName|| '-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.PRODUCT' | translate }}</label>
+              <input type="text" [formControl]="productControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PREMIUM_VALUE' | translate }}</span>
-              <span class="sale-detail__info-value">{{  saleDetail?.policyData.premiumAmount||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.PREMIUM_VALUE' | translate }}</label>
+              <input type="text" [formControl]="premiumValueControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PAYMENT_FREQUENCY' | translate }}</span>
-              <span class="sale-detail__info-value">{{getPaymentFrequencyKey()||  '-' |translate}}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.PAYMENT_FREQUENCY' | translate }}</label>
+              <input type="text" [formControl]="paymentFrequencyControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.POLICY_NUMBER' | translate }}</span>
-              <span class="sale-detail__info-value">{{ saleDetail?.policyData.number||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.POLICY_NUMBER' | translate }}</label>
+              <input type="text" [formControl]="policyNumberControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.BROKER_COMMISSION' | translate }}</span>
-              <span class="sale-detail__info-value">{{'%'+ calculatePolicyPercentage()||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.BROKER_COMMISSION' | translate }}</label>
+              <input type="text" [formControl]="brokerCommissionControl" class="sale-detail__field-input" readonly>
             </div>
           </div>
         </div>
@@ -75,19 +75,19 @@
           </h2>
           
           <div class="sale-detail__info-grid sale-detail__info-grid--single">
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.NAME' | translate }}</span>
-              <span class="sale-detail__info-value">{{saleDetail?.customer.fullName||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.NAME' | translate }}</label>
+              <input type="text" [formControl]="customerNameControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.EMAIL' | translate }}</span>
-              <span class="sale-detail__info-value">{{saleDetail?.customer.email||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.EMAIL' | translate }}</label>
+              <input type="text" [formControl]="customerEmailControl" class="sale-detail__field-input" readonly>
             </div>
             
-            <div class="sale-detail__info-item">
-              <span class="sale-detail__info-label">{{ 'IP.SELL_DETAIL.PHONE' | translate }}</span>
-              <span class="sale-detail__info-value">{{saleDetail?.customer.phoneNumber||'-' }}</span>
+            <div class="sale-detail__field">
+              <label class="sale-detail__field-label">{{ 'IP.SELL_DETAIL.PHONE' | translate }}</label>
+              <input type="text" [formControl]="customerPhoneControl" class="sale-detail__field-input" readonly>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { AmountFormatPipe } from 'projects/base/src/shared/Utils/amount-format-p
 import { CurrencySymbolPipe } from 'projects/base/src/shared/Utils/currency-simbol-pipe';
 import { CardConfig } from '../../interface/movile-table';
 import { CustomDatePipe } from 'projects/base/src/shared/Utils/pipeCustomDate';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sell-detail',
@@ -85,6 +86,19 @@ export class SellDetailComponent implements OnInit,OnDestroy {
   isLoading: boolean = false;
   mobileCardConfig!: CardConfig;
 
+  // Form controls deshabilitados
+  saleDateControl = new FormControl({value: '', disabled: true});
+  policyValueControl = new FormControl({value: '', disabled: true});
+  commissionValueControl = new FormControl({value: '', disabled: true});
+  productControl = new FormControl({value: '', disabled: true});
+  premiumValueControl = new FormControl({value: '', disabled: true});
+  paymentFrequencyControl = new FormControl({value: '', disabled: true});
+  policyNumberControl = new FormControl({value: '', disabled: true});
+  brokerCommissionControl = new FormControl({value: '', disabled: true});
+  customerNameControl = new FormControl({value: '', disabled: true});
+  customerEmailControl = new FormControl({value: '', disabled: true});
+  customerPhoneControl = new FormControl({value: '', disabled: true});
+
   /**
    * Load detail
    */
@@ -99,7 +113,18 @@ export class SellDetailComponent implements OnInit,OnDestroy {
       this.saleDetail.amount=this.amountPipe.transform(this.saleDetail.amount, true, symbol, this.saleDetail.currency)
       this.saleDetail.policyData.premiumAmount=this.amountPipe.transform(this.saleDetail.policyData.premiumAmount, true, symbol, this.saleDetail.currency)
       this.saleDetail.policyData.amount=this.amountPipe.transform(this.saleDetail.policyData.amount, true, symbol, this.saleDetail.currency)
-      
+      this.saleDateControl.setValue(this.datePipe.transform(res.saleDate));
+      this.policyValueControl.setValue(this.saleDetail.policyData.amount);
+      this.commissionValueControl.setValue(this.saleDetail.amount);
+      this.productControl.setValue(res.productName);
+      this.premiumValueControl.setValue(this.saleDetail.policyData.premiumAmount);
+      this.paymentFrequencyControl.setValue(this.translate.instant(this.getPaymentFrequencyKey()));
+      this.policyNumberControl.setValue(res.policyData.number);
+      this.brokerCommissionControl.setValue('%' + this.calculatePolicyPercentage());
+      this.customerNameControl.setValue(res.customer.fullName);
+      this.customerEmailControl.setValue(res.customer.email);
+      this.customerPhoneControl.setValue(res.customer.phoneNumber);
+
       this.data = this.saleDetail.policyData.premiumPaymentPlan.map((item: any) => {
         const commissionAmount = (item.amount * this.commissionValue) / this.premiumValue;
         

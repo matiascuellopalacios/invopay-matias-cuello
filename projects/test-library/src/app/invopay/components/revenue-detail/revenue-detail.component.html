@@ -23,34 +23,34 @@
           </h2>
           
           <div class="revenue-detail__info-grid">
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.REVENUE_DATE' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.transactionData.revenueDate||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.REVENUE_DATE' | translate }}</label>
+              <input type="text" [formControl]="revenueDateControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.CURRENCY' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.transactionData.currency||'-'}}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.CURRENCY' | translate }}</label>
+              <input type="text" [formControl]="currencyControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.PROVIDER' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.transactionData.paymentProvider|| '-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.PROVIDER' | translate }}</label>
+              <input type="text" [formControl]="providerControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.PAYMENT_CHANNEL' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.transactionData.paymentChannel|| '-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.PAYMENT_CHANNEL' | translate }}</label>
+              <input type="text" [formControl]="paymentChannelControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.AMOUNT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{  revenueDetail?.transactionData.amount||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.AMOUNT' | translate }}</label>
+              <input type="text" [formControl]="transactionAmountControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.OBSERVATION' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.transactionData.transactionObservations||  '-'}}</span>
+            <div class="revenue-detail__field revenue-detail__field--textarea">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.TRANSACTION_INFO.OBSERVATION' | translate }}</label>
+              <textarea [formControl]="observationControl" class="revenue-detail__field-input revenue-detail__field-textarea" readonly rows="2"></textarea>
             </div>
           </div>
         </div>
@@ -65,39 +65,39 @@
           </h2>
           
           <div class="revenue-detail__info-grid">
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.PRODUCT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.conciliationData.productName||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.PRODUCT' | translate }}</label>
+              <input type="text" [formControl]="productNameControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.BROKER' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.conciliationData.brokerName||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.BROKER' | translate }}</label>
+              <input type="text" [formControl]="brokerNameControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.CONSOLIDATED' | translate }}</span>
-              <span class="revenue-detail__info-value">{{isConsolidated()||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.CONSOLIDATED' | translate }}</label>
+              <input type="text" [formControl]="isConsolidatedControl" class="revenue-detail__field-input" readonly>
             </div>
 
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.POLICY' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.conciliationData.policyNumber||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.POLICY' | translate }}</label>
+              <input type="text" [formControl]="policyNumberControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.NUMBER_PAYMENTS' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.conciliationData.paymentNumber||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.NUMBER_PAYMENTS' | translate }}</label>
+              <input type="text" [formControl]="paymentNumberControl" class="revenue-detail__field-input" readonly>
             </div>
 
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.AMOUNT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.conciliationData.policyAmount||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.AMOUNT' | translate }}</label>
+              <input type="text" [formControl]="policyAmountControl" class="revenue-detail__field-input" readonly>
             </div>
 
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.PAYMENT_VALUE' | translate }}</span>
-              <span class="revenue-detail__info-value">{{revenueDetail?.conciliationData.paymentValue||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.CONCILIATION_INFO.PAYMENT_VALUE' | translate }}</label>
+              <input type="text" [formControl]="paymentValueControl" class="revenue-detail__field-input" readonly>
             </div>
           </div>
         </div>
@@ -114,30 +114,30 @@
       </h2>
 
       
-          <div class="revenue-detail__info-grid">
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.SALE_DATE' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.policyData.saleDate||'-' }}</span>
+          <div class="revenue-detail__info-grid revenue-detail__info-grid--policy">
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.SALE_DATE' | translate }}</label>
+              <input type="text" [formControl]="saleDateControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.PREMIUM_AMOUNT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.policyData.premiumAmount||'-'}}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.PREMIUM_AMOUNT' | translate }}</label>
+              <input type="text" [formControl]="premiumAmountControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.POLICY_NUMBER' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.policyData.number|| '-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.POLICY_NUMBER' | translate }}</label>
+              <input type="text" [formControl]="policyNumControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.POLICY_AMOUNT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{ revenueDetail?.policyData.amount|| '-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.POLICY_AMOUNT' | translate }}</label>
+              <input type="text" [formControl]="policyAmtControl" class="revenue-detail__field-input" readonly>
             </div>
             
-            <div class="revenue-detail__info-item">
-              <span class="revenue-detail__info-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.PRODUCT' | translate }}</span>
-              <span class="revenue-detail__info-value">{{  revenueDetail?.policyData.productName||'-' }}</span>
+            <div class="revenue-detail__field">
+              <label class="revenue-detail__field-label">{{ 'IP.REVENUE_DETAIL.POLICY_INFO.PRODUCT' | translate }}</label>
+              <input type="text" [formControl]="productControl" class="revenue-detail__field-input" readonly>
             </div>
           </div>
       <h3 class="revenue-detail__payment-title">{{'IP.REVENUE_DETAIL.TABLE.TITTLE'|translate}}</h3>
