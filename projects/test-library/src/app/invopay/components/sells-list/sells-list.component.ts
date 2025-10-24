@@ -60,6 +60,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   isLoading: boolean = false;
   
   mobileCardConfig!: CardConfig;
+  hasSearched: boolean = false;
 
   get isSearchDisabled(): boolean {
     return !this.dateFrom && !this.dateTo && !this.selectedProduct && !this.selectedBroker;
@@ -390,6 +391,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
   onSearch(): void {
     if (!this.dateFrom && !this.dateTo && !this.selectedProduct && !this.selectedBroker) {
       this.applyCurrentMonthFilter();
+      this.hasSearched = true;
       return;
     }
     
@@ -434,6 +436,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     this.totalItems = this.data.length;
     this.currentPages = 1;
     this.updatePaginatedData();
+    this.hasSearched = true;
   }
   
   /**
@@ -462,7 +465,7 @@ export class SellsListComponent implements OnInit,OnDestroy,AfterViewInit,AfterV
     this.selectedProduct = '';
     this.selectedBroker = '';
     this.minDateTo = '';
-    
+    this.hasSearched = false; 
     this.applyCurrentMonthFilter();
   }
   

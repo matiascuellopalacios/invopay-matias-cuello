@@ -14,13 +14,6 @@
 
     <!-- Filters Section -->
     <div class="sales-list__filters">
-      <div class="sales-list__filters-header">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" class="sales-list__filter-icon" viewBox="0 0 16 16">
-          <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" fill="#0071CE"/>
-        </svg>
-        <h2 class="sales-list__filters-subtitle">{{ 'IP.SELLS_LIST.FILTERS.TITLE' | translate }}</h2>
-      </div>
-      
       <div class="sales-list__filters-container">
        <div class="sales-list__filter-group">
   <label for="fecha-desde" class="sales-list__filter-label">{{ 'IP.SELLS_LIST.FILTERS.DATE_FROM' | translate }}</label>
@@ -53,8 +46,8 @@
               <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
-          <button class="btn btn--search" (click)="openFilters()">
-            <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
+          <button class="btn btn--filter" (click)="openFilters()" [class.btn--disabled]="!hasSearched"  [disabled]="!hasSearched">
+            <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon" >
           </button>
         </div>
       </div>
@@ -193,7 +186,7 @@
           <path [attr.stroke]="isSearchDisabled ? '#CBD5E0' : 'white'" d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-4-4" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
-      <button class="btn btn--filter" (click)="openFilters()">
+      <button class="btn btn--filter" (click)="openFilters()" [disabled]="!hasSearched">
         <img src="../../../assets/icons/filter3.svg" alt="Filtro" class="sales-list__filters-icon">
       </button>
     </div>

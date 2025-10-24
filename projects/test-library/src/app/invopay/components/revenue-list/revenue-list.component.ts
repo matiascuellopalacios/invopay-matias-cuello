@@ -86,6 +86,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
   paginatorKey: number = 0;
   isLoading: boolean = false;
   mobileCardConfig!: CardConfig;
+  hasSearched: boolean = false;
 
   get isSearchDisabled(): boolean {
     return (!this.dateFrom || !this.dateTo) && !this.selectedPaymentChannel;
@@ -362,6 +363,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.dateTo = '';
     this.selectedPaymentChannel = '';
     this.minDateTo = '';
+    this.hasSearched = false;
     
     this.applyCurrentMonthFilter();
   }
@@ -467,6 +469,7 @@ export class RevenueListComponent implements OnInit,OnDestroy,AfterViewChecked,A
     this.totalItems = this.data.length;
     this.currentPages = 1;
     this.updatePaginatedData();
+    this.hasSearched = true;
   }
 
   private getPaymentChannel(productValue: string): string {
