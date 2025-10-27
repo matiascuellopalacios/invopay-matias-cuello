@@ -79,6 +79,14 @@
         >
           <!-- <span *ngIf="key.includes('id') || key.includes('Id')">#</span> -->
           <img
+            *ngIf="key === 'logoUrl' && dataField[key] && dataField[key].trim()"
+            [src]="dataField[key]"
+            alt="Logo"
+            class="provider-logo"
+            width="30px"
+            style="max-height: 50px; object-fit: contain;"
+          />
+          <img
             *ngIf="key === 'cardNumber' && dataField.cardNetwork === 'VISA'"
             src="../../../../assets/new-styles/img/card-visa-blue.png"
             class="table__body-row-item-visa"
@@ -105,7 +113,7 @@
                 ? 'keep-all'
                 : 'inherit'
             "
-            *ngIf="dataField[key] !== true && dataField[key] !== false"
+            *ngIf="dataField[key] !== true && dataField[key] !== false && key !== 'logoUrl'"
           >
             {{ dataField[key] | transformDataTable : key : keyTranslate }}
           </span>
