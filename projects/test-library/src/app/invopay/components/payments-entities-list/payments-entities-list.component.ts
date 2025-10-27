@@ -70,7 +70,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
   private readonly providersService=inject(ProvidersService);
-  defaultLogo = '../../../../assets/img/mercado-pago.jpeg';
+  defaultLogo = 'assets/img/mercado-pago.jpeg';
 
   loadProviders(){
     const sub=this.providersService.getPaymentsEntities().subscribe({
