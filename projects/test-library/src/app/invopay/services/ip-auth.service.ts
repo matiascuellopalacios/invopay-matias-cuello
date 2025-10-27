@@ -73,6 +73,7 @@ export class IpAuthService {
 
       sessionStorage.clear()
       this.sessionSubject.next(false);
+      this.router.navigate(['/login']);
     }
   }
 
