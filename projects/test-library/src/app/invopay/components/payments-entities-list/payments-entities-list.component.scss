@@ -79,6 +79,18 @@ $backgrounds-color: #D9D9D9;
     padding: 0;
   }
 
+  &__paginator-container--desktop {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &__paginator-container--mobile {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
   &__rows-per-page {
     display: flex;
     align-items: center;
@@ -132,23 +144,33 @@ $backgrounds-color: #D9D9D9;
 
     &__title-section {
       padding: 15px 20px;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    &__title {
+      font-size: 18px;
+      line-height: 1.2;
     }
 
     &__table-container--desktop {
       display: none;
     }
 
-    &__paginator-container {
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
     &__rows-per-page {
       position: static;
       width: 100%;
       justify-content: center;
+    }
+  }
+}
+
+// Mobile card list overrides for payments-entities
+::ng-deep .payment-entities__cards-container--mobile {
+  .mobile-card-list {
+    &__value {
+      font-size: 12px !important;
     }
   }
 }

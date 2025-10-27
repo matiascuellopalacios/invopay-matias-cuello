@@ -77,6 +77,28 @@
           </app-no-data>
         </div>
       </div>
+
+      <!-- Paginator Section - Desktop -->
+      <div class="sales-list__paginator-container sales-list__paginator-container--desktop" *ngIf="paginatedData && paginatedData.length > 0">
+        <div class="sales-list__rows-per-page">
+          <span>Filas por páginas:</span>
+          <select class="sales-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+        </div>
+        
+         <app-paginator 
+      *ngIf="showPaginator"
+      class="sales-list__paginator"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      [currentPages]="currentPages"
+      (pageChange)="onPageChange($event)">
+    </app-paginator>
+      </div>
     </div>
 
     <!-- Cards Container - Mobile -->
@@ -88,28 +110,28 @@
         (cardAction)="onMobileCardAction($event)">
         <app-no-data no-data></app-no-data>
       </app-mobile-card-list>
-    </div>
 
-    <!-- Paginator Section -->
-    <div class="sales-list__paginator-container" *ngIf="paginatedData && paginatedData.length > 0">
-      <div class="sales-list__rows-per-page">
-        <span>Filas por páginas:</span>
-        <select class="sales-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
-          <option [value]="10">10</option>
-          <option [value]="25">25</option>
-          <option [value]="50">50</option>
-          <option [value]="100">100</option>
-        </select>
+      <!-- Paginator Section - Mobile -->
+      <div class="sales-list__paginator-container sales-list__paginator-container--mobile" *ngIf="paginatedData && paginatedData.length > 0">
+        <div class="sales-list__rows-per-page">
+          <span>Filas por páginas:</span>
+          <select class="sales-list__rows-select" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+        </div>
+        
+         <app-paginator 
+      *ngIf="showPaginator"
+      class="sales-list__paginator"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      [currentPages]="currentPages"
+      (pageChange)="onPageChange($event)">
+    </app-paginator>
       </div>
-      
-       <app-paginator 
-    *ngIf="showPaginator"
-    class="sales-list__paginator"
-    [totalItems]="totalItems"
-    [itemsPerPage]="itemsPerPage"
-    [currentPages]="currentPages"
-    (pageChange)="onPageChange($event)">
-  </app-paginator>
     </div>
   </div>
 </div>

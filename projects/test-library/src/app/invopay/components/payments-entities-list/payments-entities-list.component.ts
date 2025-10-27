@@ -39,16 +39,16 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     };
   }
   ngAfterViewChecked(): void {
-    this.renderLogos();
+    // Logo rendering is now handled by the table component
   }
   
   ngAfterViewInit(): void {
-    this.renderLogos();
+    // Logo rendering is now handled by the table component
   }
   data: any[] = [];
   originalData: any[] = [];
   columns = [
-    'logo',
+    'logoUrl',
     'providerName',
     'channel',
     'active',
@@ -70,9 +70,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
   private readonly providersService=inject(ProvidersService);
-  defaultLogo = '../../../assets/img/mercado-pago.jpeg';
-  isRenderingLogos = false;
-  private hasRenderedLogos = new Set<number>();
+  defaultLogo = 'assets/img/mercado-pago.jpeg';
 
   loadProviders(){
     const sub=this.providersService.getPaymentsEntities().subscribe({
@@ -83,7 +81,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
                
           return {
             id: prov.id,
-            logo:prov.logoUrl,
+            logoUrl: this.defaultLogo,
             providerName: prov.name,
             channel: prov.paymentChannels,
             active: this.isActive(prov.isActive),
@@ -116,8 +114,6 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
     const start = (this.currentPages - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginatedData = this.data.slice(start, end);
-     this.hasRenderedLogos.clear();
-  setTimeout(() => this.renderLogos(), 0);
   }
   
   loadData(): void {
@@ -135,34 +131,6 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   onMobileCardAction(item: any): void {
     console.log('Ver detalle:', item);
   }
-
- private renderLogos() {
-  const table = document.querySelector('.table__body');
-  if (!table) return;
-  
-  const fragment = document.createDocumentFragment();
-  const logoRows = table.querySelectorAll('.table__body-row');
-  
-  logoRows.forEach((row: any, index: number) => {
-    if (this.hasRenderedLogos.has(index)) return;
-    
-    const logoCell = row.querySelector('.table__body-row-item:first-child');
-    if (!logoCell || logoCell.querySelector('img')) return;
-    
-    const logoData = this.paginatedData[index];
-    if (!logoData?.logo) return;
-    const img = new Image();
-    img.src = logoData.logo;
-    img.alt = logoData.providerName || 'Logo';
-    img.className = 'provider-logo';
-    img.onerror = () => { img.src = this.defaultLogo; };
-    
-    logoCell.textContent = '';
-    logoCell.appendChild(img);
-    
-    this.hasRenderedLogos.add(index);
-  });
-}
   
   onItemsPerPageChange(newValue: number): void {
     this.itemsPerPage = Number(newValue);
@@ -178,7 +146,7 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
 
   private initializeTranslations() {
     this.titlesFile = new Map<string, string>([
-      ['logo', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.LOGO')],
+      ['logoUrl', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.LOGO')],
       ['providerName', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PROVIDEER')],
       ['channel', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.PAYMENT_CHANNEL')],
       ['active', this.translate.instant('IP.PAYMENTS_ENTITIES.TABLE.ACTIVE')],
