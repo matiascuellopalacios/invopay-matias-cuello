@@ -2364,7 +2364,7 @@
       }
     },
     "SELLS_LIST": {
-      "TITLE": "Listado de Ventas",
+      "TITLE": "Ventas",
       "FILTERS": {
         "TITLE": "Filtros",
         "DATE_FROM": "Desde",
@@ -2439,7 +2439,7 @@
       "ROWS_PER_PAGE":"Filas por página"
     },
     "REVENUE_LIST":{
-      "TITLE":"Listado de Recaudaciones",
+      "TITLE":"Recaudaciones",
       "FILTERS":{
         "TITLE":"Filtros",
         "DATE_FROM":"Desde",
