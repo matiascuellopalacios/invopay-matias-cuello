@@ -1222,6 +1222,108 @@
       "FISCAL_ID": "ID fiscal:",
       "FINISH": "Fim"
     },
+    "REVENUE_LIST": {
+      "TITLE": "Arrecadações",
+      "FILTERS_TITLE": "Filtrar",
+      "FILTERS": {
+        "TITLE": "Filtros",
+        "DATE_FROM": "De",
+        "DATE_TO": "Até",
+        "PAYMEN_CHANNEL": "Canal de pagamento"
+      },
+      "TABLE": {
+        "REVENUE_DATE": "Data e hora",
+        "CURRENCY": "Moeda",
+        "AMOUNT": "Valor",
+        "POLICY_NUMBER": "Nº apólice",
+        "PRODUCT_NAME": "Produto",
+        "BROKER_NAME": "Corretor",
+        "CONSOLIDATED": "Consolidado",
+        "PAYMENT_CHANNEL": "Canal de pagamento",
+        "PAYMENT_AMOUNT": "Valor do prêmio",
+        "DETAIL": "Detalhe",
+        "PROVIDEER": "Provedor",
+        "VIEW": "Ver"
+      },
+      "PAYMENT_CHANNELS": {
+        "TICKET": "Bilhete",
+        "CARD": "Cartão",
+        "BANK_TRANSFER": "Transferência",
+        "CHECK": "Cheque"
+      },
+      "PAYMENT_PLAYCEHOLDER": "Canais"
+    },
+    "REVENUE_DETAIL": {
+      "TITLE": "Detalhe da Arrecadação",
+      "ROWS_PER_PAGE": "Linhas por página",
+      "TABLE": {
+        "TITTLE": "Plano de Pagamento do Prêmio",
+        "N_PAYMENTS": "N° Parcela",
+        "DATE_EXPIRY": "Data de Vencimento",
+        "PAYMENT_VALUE": "Valor do Pagamento"
+      },
+      "TRANSACTION_INFO": {
+        "TITLE": "Dados da Transação",
+        "REVENUE_DATE": "Data e hora",
+        "CURRENCY": "Moeda",
+        "AMOUNT": "Valor",
+        "PROVIDER": "Provedor de Pagamento",
+        "PAYMENT_CHANNEL": "Canal de pagamento",
+        "OBSERVATION": "Observação"
+      },
+      "CONCILIATION_INFO": {
+        "TITLE": "Dados de Conciliação",
+        "PRODUCT": "Produto",
+        "POLICY": "Apólice",
+        "AMOUNT": "Valor",
+        "BROKER": "Corretor",
+        "NUMBER_PAYMENTS": "Nº Pagamento",
+        "PAYMENT_VALUE": "Valor do Pagamento",
+        "CONSOLIDATED": "Consolidado",
+        "YES": "Sim",
+        "NO": "Não"
+      },
+      "POLICY_INFO": {
+        "TITLE": "Dados da Apólice",
+        "POLICY_NUMBER": "Número da Apólice",
+        "SALE_DATE": "Data da Venda",
+        "PREMIUM_AMOUNT": "Valor do Prêmio",
+        "POLICY_AMOUNT": "Valor da Apólice",
+        "PRODUCT": "Produto"
+      }
+    },
+    "SELL_DETAIL": {
+      "TITLE": "Detalhe da Venda",
+      "GENERAL_INFO": "Informação Geral",
+      "CUSTOMER_INFO": "Informação do Cliente",
+      "TABLE": {
+        "TITTLE": "Plano de Pagamento do Prêmio"
+      },
+      "SALE_DATE": "Data da Venda",
+      "POLICY_VALUE": "Valor da Apólice",
+      "COMMISSION_VALUE": "Valor da Comissão",
+      "PRODUCT": "Produto",
+      "PREMIUM_VALUE": "Valor do Prêmio",
+      "PAYMENT_FREQUENCY": "Frequência de Pagamento",
+      "POLICY_NUMBER": "Número da Apólice",
+      "BROKER_COMMISSION": "Comissão do Corretor",
+      "NAME": "Nome",
+      "EMAIL": "E-mail",
+      "PHONE": "Telefone"
+    },
+    "PAYMENTS_ENTITIES": {
+      "TITTLE": "Provedores e Canais de arrecadação",
+      "TABLE": {
+        "LOGO": "Logo",
+        "PROVIDEER": "Provedor",
+        "PAYMENT_CHANNEL": "Canais",
+        "ACTIVE": "Ativo",
+        "DESCRIPTION": "Descrição",
+        "DETAIL": "Detalhe",
+        "YES": "Sim",
+        "NO": "Não"
+      }
+    },
     "SELLS_LIST": {
       "TITLE": "Lista de Vendas",
       "FILTERS": {
@@ -1253,6 +1355,12 @@
         "JUAN_PEREZ": "Juan Pérez",
         "ANA_MARTINEZ": "Ana Martínez",
         "BROKER_SA": "Corretor S.A."
+      },
+      "MODAL": {
+        "TITTLE": "Filtrar vendas",
+        "APPLY": "Aplicar",
+        "CANCEL": "Fechar",
+        "CLEAR": "Limpar filtros"
       }
     }
   }

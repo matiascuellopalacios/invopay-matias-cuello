@@ -276,8 +276,10 @@
   @include sm {
     padding: 10px;
 
-    &__container {
-      gap: 15px;
+    &__header {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
     }
 
     &__info-card {

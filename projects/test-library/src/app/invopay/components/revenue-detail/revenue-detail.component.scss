@@ -302,6 +302,12 @@
       gap: 15px;
     }
 
+    &__header {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
     &__info-card {
       padding: 16px;
       width: 100% !important;

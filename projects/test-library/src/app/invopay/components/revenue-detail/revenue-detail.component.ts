@@ -44,7 +44,9 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
     'paymentValue'
   ]
 
-  // Form controls deshabilitados - Transaction Data
+  /*
+   Form controls deshabilitados - Transaction Data
+  */
   revenueDateControl = new FormControl({value: '', disabled: true});
   currencyControl = new FormControl({value: '', disabled: true});
   providerControl = new FormControl({value: '', disabled: true});
@@ -52,7 +54,9 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   transactionAmountControl = new FormControl({value: '', disabled: true});
   observationControl = new FormControl({value: '', disabled: true});
 
-  // Form controls deshabilitados - Conciliation Data
+  /*
+   Form controls deshabilitados - Conciliation Data
+  */
   productNameControl = new FormControl({value: '', disabled: true});
   brokerNameControl = new FormControl({value: '', disabled: true});
   isConsolidatedControl = new FormControl({value: '', disabled: true});
@@ -61,7 +65,9 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
   policyAmountControl = new FormControl({value: '', disabled: true});
   paymentValueControl = new FormControl({value: '', disabled: true});
 
-  // Form controls deshabilitados - Policy Data
+  /*
+  * Form controls deshabilitados - Policy Data
+  */
   saleDateControl = new FormControl({value: '', disabled: true});
   premiumAmountControl = new FormControl({value: '', disabled: true});
   policyNumControl = new FormControl({value: '', disabled: true});
@@ -117,38 +123,45 @@ export class RevenueDetailComponent implements OnInit,OnDestroy{
           const fechaHoraFormateada = this.formatDateTimeManual(revenueDate);
           this.revenueDetail.transactionData.revenueDate = fechaHoraFormateada;
           this.revenueDetail.transactionData.amount = this.amountPipe.transform(res.transactionData.amount, true, symbol, res.transactionData.currency);
-          this.revenueDetail.conciliationData.policyAmount = this.amountPipe.transform(res.conciliationData.policyAmount, true, symbol, res.transactionData.currency);
-          this.revenueDetail.conciliationData.paymentValue = this.amountPipe.transform(res.conciliationData.paymentValue, true, symbol, res.transactionData.currency);
-          this.revenueDetail.policyData.amount = this.amountPipe.transform(res.policyData.amount, true, symbol, res.transactionData.currency);
-          this.revenueDetail.policyData.saleDate = this.datePipe.transform(res.policyData.saleDate);
-          this.revenueDetail.policyData.premiumAmount = this.amountPipe.transform(res.policyData.premiumAmount, true, symbol, res.transactionData.currency);
+          if (res.conciliationData) {
+            this.revenueDetail.conciliationData.policyAmount = this.amountPipe.transform(res.conciliationData.policyAmount, true, symbol, res.transactionData.currency);
+            this.revenueDetail.conciliationData.paymentValue = this.amountPipe.transform(res.conciliationData.paymentValue, true, symbol, res.transactionData.currency);
+          }
+          if (res.policyData) {
+            this.revenueDetail.policyData.amount = this.amountPipe.transform(res.policyData.amount, true, symbol, res.transactionData.currency);
+            this.revenueDetail.policyData.saleDate = this.datePipe.transform(res.policyData.saleDate);
+            this.revenueDetail.policyData.premiumAmount = this.amountPipe.transform(res.policyData.premiumAmount, true, symbol, res.transactionData.currency);
+          }
           this.revenueDateControl.setValue(this.revenueDetail.transactionData.revenueDate);
           this.currencyControl.setValue(res.transactionData.currency);
           this.providerControl.setValue(res.transactionData.paymentProvider);
           this.paymentChannelControl.setValue(res.transactionData.paymentChannel);
           this.transactionAmountControl.setValue(this.revenueDetail.transactionData.amount);
           this.observationControl.setValue(res.transactionData.transactionObservations);
-          this.productNameControl.setValue(res.conciliationData.productName);
-          this.brokerNameControl.setValue(res.conciliationData.brokerName);
+          this.productNameControl.setValue(res.conciliationData?.productName || '');
+          this.brokerNameControl.setValue(res.conciliationData?.brokerName || '');
           this.isConsolidatedControl.setValue(this.isConsolidated());
-          this.policyNumberControl.setValue(res.conciliationData.policyNumber);
-          this.paymentNumberControl.setValue(res.conciliationData.paymentNumber?.toString() || '');
-          this.policyAmountControl.setValue(this.revenueDetail.conciliationData.policyAmount);
-          this.paymentValueControl.setValue(this.revenueDetail.conciliationData.paymentValue);
-          this.saleDateControl.setValue(this.revenueDetail.policyData.saleDate);
-          this.premiumAmountControl.setValue(this.revenueDetail.policyData.premiumAmount);
-          this.policyNumControl.setValue(res.policyData.number);
-          this.policyAmtControl.setValue(this.revenueDetail.policyData.amount);
-          this.productControl.setValue(res.policyData.productName);
+          this.policyNumberControl.setValue(res.conciliationData?.policyNumber || '');
+          this.paymentNumberControl.setValue(res.conciliationData?.paymentNumber?.toString() || '');
+          this.policyAmountControl.setValue(this.revenueDetail.conciliationData?.policyAmount || '');
+          this.paymentValueControl.setValue(this.revenueDetail.conciliationData?.paymentValue || '');
+          this.saleDateControl.setValue(this.revenueDetail.policyData?.saleDate || '');
+          this.premiumAmountControl.setValue(this.revenueDetail.policyData?.premiumAmount || '');
+          this.policyNumControl.setValue(res.policyData?.number || '');
+          this.policyAmtControl.setValue(this.revenueDetail.policyData?.amount || '');
+          this.productControl.setValue(res.policyData?.productName || '');
 
-          this.data = this.revenueDetail.policyData.premiumPaymentPlan.map((item: any) => {
-          return {
-          installmentNumber: item.installmentNumber,
-          dueDate: this.datePipe.transform(item.dueDate),
-          paymentValue: this.amountPipe.transform(item.amount, true, symbol, this.revenueDetail.transactionData.currency)
-        };
-       
-      });
+          if (res.policyData) {
+            this.data = this.revenueDetail.policyData.premiumPaymentPlan.map((item: any) => {
+              return {
+                installmentNumber: item.installmentNumber,
+                dueDate: this.datePipe.transform(item.dueDate),
+                paymentValue: this.amountPipe.transform(item.amount, true, symbol, this.revenueDetail.transactionData.currency)
+              };
+            });
+          } else {
+            this.data = [];
+          }
        this.loadData();
         this.isConsolidated();
       },

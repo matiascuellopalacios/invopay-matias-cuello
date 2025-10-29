@@ -2440,6 +2440,7 @@
     },
     "REVENUE_LIST":{
       "TITLE":"Recaudaciones",
+      "FILTERS_TITLE":"Filtrar",
       "FILTERS":{
         "TITLE":"Filtros",
         "DATE_FROM":"Desde",
