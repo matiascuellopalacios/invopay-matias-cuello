@@ -75,13 +75,14 @@ export class PaymentsEntitiesListComponent implements OnInit,OnDestroy,AfterView
   loadProviders(){
     const sub=this.providersService.getPaymentsEntities().subscribe({
       next:(res)=>{
+        console.log(res)
         const providerData= Array.isArray(res) ? res[0] : res;
         this.originalData = providerData.content.map((prov: PaymentProvider) => {
           
                
           return {
             id: prov.id,
-            logoUrl: this.defaultLogo,
+            logoUrl: prov.logoUrl,
             providerName: prov.name,
             channel: prov.paymentChannels,
             active: this.isActive(prov.isActive),
