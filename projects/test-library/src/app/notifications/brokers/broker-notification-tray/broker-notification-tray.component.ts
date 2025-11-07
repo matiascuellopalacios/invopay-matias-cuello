@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationTrayComponent, NotificationTrayConfig, NotificationItem } from '../../../shared/components/notification-tray/notification-tray.component';
 import { NotificationBrokerService } from '../services/notification-broker.service';
@@ -101,9 +101,26 @@ export class BrokerNotificationTrayComponent implements OnInit,OnDestroy {
     }
   };
 
+  private isMobileView = false;
+  private mobileBreakpoint = 1024; 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkViewport();
+  }
+
+  private checkViewport() {
+    const wasMobile = this.isMobileView;
+    this.isMobileView = window.innerWidth < this.mobileBreakpoint;
+
+    if (wasMobile && !this.isMobileView && this.showMobileFiltersModal) {
+      this.showMobileFiltersModal = false;
+    }
+  }
+
   ngOnInit() {
     this.loadNotifications();
     this.entityOptions = this.notificationTrayConfig.entities.map(e => ({ label: e, value: e }));
+    this.checkViewport();
   }
 
   private loadNotifications(): void {

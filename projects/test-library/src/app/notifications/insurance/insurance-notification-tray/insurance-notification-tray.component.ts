@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { NotificationTrayComponent, NotificationTrayConfig, NotificationItem } from '../../../shared/components/notification-tray/notification-tray.component';
@@ -128,11 +128,30 @@ export class InsuranceNotificationTrayComponent implements OnInit, OnDestroy {
     }
   };
 
+  private isMobileView = false;
+  private mobileBreakpoint = 1024; // Match this with your mobile breakpoint
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkViewport();
+  }
+
+  private checkViewport() {
+    const wasMobile = this.isMobileView;
+    this.isMobileView = window.innerWidth < this.mobileBreakpoint;
+    
+    // Close modal when switching from mobile to desktop
+    if (wasMobile && !this.isMobileView && this.showMobileFiltersModal) {
+      this.showMobileFiltersModal = false;
+    }
+  }
+
   ngOnInit() {
     this.loadBrokers();
-    this.loadNotifications('', {});
+    this.loadNotifications();
     this.entityOptions = this.notificationTrayConfig.entities.map(e => ({ label: e, value: e }));
     this.userOptions = this.notificationTrayConfig.users.map(u => ({ label: u, value: u }));
+    this.checkViewport();
   }
 
   private loadNotifications(type: string = '', filters: any = {}): void {
