@@ -2,5 +2,5 @@
   "version": 2,
   "buildCommand": "npm run build:test-library",
   "outputDirectory": "dist/test-library",
-  "installCommand": "npm install"
+  "installCommand": "npm install --legacy-peer-deps"
 }
