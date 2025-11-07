@@ -2,9 +2,12 @@
   "name": "invopay-library",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:base": "ng build base",
+    "build:test-library": "ng build base && ng build test-library",
+    "build:all": "npm run build:base && npm run build:test-library",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
