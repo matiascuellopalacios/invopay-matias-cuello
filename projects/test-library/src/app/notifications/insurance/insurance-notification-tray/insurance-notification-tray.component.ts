@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { NotificationTrayComponent, NotificationTrayConfig, NotificationItem } from '../../../invopay/components/notification-tray/notification-tray.component';
+import { NotificationTrayComponent, NotificationTrayConfig, NotificationItem } from '../../../shared/components/notification-tray/notification-tray.component';
 import { NotificationInsuranceService } from '../services/notification-insurance.service';
 import { Notification, Observation, NotificationRead } from '../../../shared/models/notificationResponse';
 import { FormControl } from '@angular/forms';

@@ -21,8 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../shared/shared.module';
 import { InvopayRoutingModule } from './invopay-routing.module';
 
-
-import { MobileCardListComponent } from './components/mobile-card-list/mobile-card-list.component';
+import { TokenInterceptor } from './services/token.interceptor';
+import { MobileCardListComponent } from '../shared/components/mobile-card-list/mobile-card-list.component';
 
 import { HomeComponent } from './views/home/home.component';
 import { Template1Component } from './views/template1/template1.component';

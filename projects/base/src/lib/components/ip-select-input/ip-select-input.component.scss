@@ -27,11 +27,12 @@
     appearance: none;
     background-image: url(../../../../assets/img/pay-bill/ic_down.svg);
     background-repeat: no-repeat;
-    background-position-x: 96%;
+    background-position-x: 99%;
     background-position-y: center;
     margin-right: 0.3rem;
     &-without-icon {
       background-image: none;
+      padding: 0 !important;
     }
   }
   select {
@@ -97,11 +98,11 @@
 .ip-select-label-floating {
   @include generalInputText();
 
-  padding: 0;
+  padding: 0.1rem 0.4rem !important;
   transform: scale(0.8) translateY(-20px) translateX(10px) !important;
 
   @include medias(md, lg, xl) {
-    transform: scale(0.75) translateY(-22px) translateX(15px) !important;
+    transform: scale(0.75) translateY(-14px) translateX(24px) !important;
   }
   background-color: $input-bg-color;
   height: fit-content;

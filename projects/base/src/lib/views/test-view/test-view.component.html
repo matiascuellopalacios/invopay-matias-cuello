@@ -10,10 +10,7 @@
     <app-ip-date-input inputId="ipDateInputTest" label="Date" />
 
     <!-- uso del select-input -->
-    <app-ip-select-input [label]="'Select'">
-      <option *ngFor="let person of this.people" [value]="person.id">
-        {{ person.name }}
-      </option>
+    <app-ip-select-input [label]="'Select'" [options]="options">
     </app-ip-select-input>
 
     <app-ip-text-area-input inputId="ipTextAreaInputTest" label="Text Area" />
@@ -22,7 +19,7 @@
       Titulo
     </app-ip-title-mobile>
 
-    <app-ip-button-modal type="submit" >
+    <app-ip-button-modal type="submit">
       Submit
     </app-ip-button-modal>
 

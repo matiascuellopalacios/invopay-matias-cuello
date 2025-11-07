@@ -19,7 +19,7 @@
     </div>
   </section>
 
-  <section *ngIf="options.length > 0" class="ip-select-input form-floating">
+  <section *ngIf="options.length > 0" class=" form-floating">
     <ng-container *ngTemplateOutlet="selectWithOptions" />
   </section>
 </main>
@@ -30,11 +30,13 @@
   </label>
   <mat-select
     [formControl]="control"
-    class="form-floating-select-without-icon shadow-none"
+    class="form-floating-select-without-icon form-control shadow-none"
     [multiple]="isMultiple"
     (selectionChange)="onSelectMaterial($event)"
+    [placeholder]="placeholder"
   >
-    <mat-option *ngFor="let option of options" [value]="option.value">
+    <mat-option *ngIf="noneOption">{{ 'IP.SELECT-INPUT.NONE-OPTION' | translate }}</mat-option>
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.value">
       {{ option.labelCode ? (option.labelCode | translate) : option.label }}
     </mat-option>
   </mat-select>

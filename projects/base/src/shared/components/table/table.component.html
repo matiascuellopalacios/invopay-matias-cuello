@@ -1,13 +1,7 @@
-<div *ngIf="!scroll">
+<div>
   <ng-container *ngTemplateOutlet="table"></ng-container>
 </div>
-<div *ngIf="scroll">  
-  <div class="table-scroll">
-    <app-ip-drag-scroll>
-      <ng-container *ngTemplateOutlet="table"></ng-container>
-    </app-ip-drag-scroll>
-  </div>
-</div>
+
 <ng-template #table>
 <table class="table" *ngIf="data" >
   <!-- headers -->
@@ -99,10 +93,7 @@
             class="table__body-row-item-mastercard"
           />
           <span
-            [matTooltip]="generateTooltip(dataField[key], key, keyTranslate)"
-            [matTooltipDisabled]="
-              !generateTooltip(dataField[key], key, keyTranslate)
-            "
+            
             [style.word-break]="
               key.includes('amount') || key.includes('Amount')
                 ? 'normal'
@@ -115,7 +106,7 @@
             "
             *ngIf="dataField[key] !== true && dataField[key] !== false && key !== 'logoUrl'"
           >
-            {{ dataField[key] | transformDataTable : key : keyTranslate }}
+            {{ dataField[key]  }}
           </span>
           <span *ngIf="dataField[key] === true || dataField[key] === false">
             <ng-container *ngIf="key === 'isActive' && dataField.contractId">
@@ -169,7 +160,6 @@
               <span
                 class="table__body-row-actions-list-item"
                 (click)="onAction(action, dataField)"
-                [matTooltip]="getTooltipText(action, dataField)"
                 [ngStyle]="{
                   'background-image': this.checkAction(dataField, action).icon,
                   'pointer-events': this.checkAction(dataField, action)

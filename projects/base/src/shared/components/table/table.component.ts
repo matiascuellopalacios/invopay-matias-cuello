@@ -44,7 +44,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   constructor(
     private translate: TranslateService,
-    private transformDataTablePipe: TransformDataTablePipe
+    //private transformDataTablePipe: TransformDataTablePipe
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -203,15 +203,15 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   generateTooltip(data: any, key: string, keyTranslate: string) {
-    const transformedData = this.transformDataTablePipe.transform(
-      data,
-      key,
-      keyTranslate
-    ) as string;
+    //const transformedData = this.transformDataTablePipe.transform(
+    //  data,
+    //  key,
+    //  keyTranslate
+    //) as string;
     
-    if (transformedData.toString().includes('...')) {
-      return data;
-    }
+    //if (transformedData.toString().includes('...')) {
+    //  return data;
+    //}
     return '';
   }
 

@@ -2363,5 +2363,17 @@
         "TEXT5": "Vea y monitoree todos los indicadores de la perfomance de su negocio."
       }
     }
+  },
+  "REVENUES": {
+    "TITLE": "Recaudaciones",
+    "TABLE": {
+      "REVENUEDATE": "Fecha",
+      "REVENUEAMOUNT": "Monto",
+      "PAYMENTCHANNEL": "Canal de pago",
+      "POLICYNUMBER": "Número de póliza",
+      "PRODUCTNAME": "Producto",
+      "PREMIUMAMOUNT": "Monto prima",
+      "BROKERNAME": "Agente de ventas"
+    }
   }
 }

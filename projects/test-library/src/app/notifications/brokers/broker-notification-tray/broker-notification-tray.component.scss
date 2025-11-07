@@ -1,3 +1,4 @@
+// Notification Tray Styles (only tray styles, modal styles moved to shared component)
 @import "../../../../../../base/src/shared/mixins/generalText.scss";
 @import "../../../../../../base/src/shared/mixins/utils.scss";
 @import "../../../../../../base/src/shared/mixins/sizes.scss";
@@ -131,9 +132,16 @@ $backgrounds-color: #D9D9D9;
   .cdk-overlay-backdrop {
     z-index: 898 !important;
   }
-
-  .ip-select-input {
+  .form-control {
+    border-radius: 6px !important;
+    background: #FFFFFF !important;
+    padding-bottom: 0px !important;
+    height: 30px !important;
+    display: flex !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid #E0E6ED !important;
+  }
+  .ip-select-input {
     border-radius: 6px !important;
     background: #FFFFFF !important;
     padding-bottom: 0px !important;

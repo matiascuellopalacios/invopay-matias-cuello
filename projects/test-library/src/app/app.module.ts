@@ -29,8 +29,8 @@ import { PaymentsEntitiesListComponent } from './payments/payments-entities-list
 import { AdditionalFiltersModalComponent } from './shared/components/additional-filters-modal/additional-filters-modal.component';
 import { MobileDateFiltersModalComponent } from './shared/components/mobile-date-filters-modal/mobile-date-filters-modal.component';
 import { InsuranceNotificationTrayComponent } from './notifications/insurance/insurance-notification-tray/insurance-notification-tray.component';
-import { NotificationTrayComponent } from './invopay/components/notification-tray/notification-tray.component';
-import { NotificationModalComponent } from './invopay/components/notification-modal/notification-modal.component';
+import { NotificationTrayComponent } from './shared/components/notification-tray/notification-tray.component';
+import { NotificationModalComponent } from './shared/components/notification-modal/notification-modal.component';
 import { BrokerNotificationTrayComponent } from './notifications/brokers/broker-notification-tray/broker-notification-tray.component';
 
 

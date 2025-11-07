@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,6 +22,7 @@ import { LastFourDigitsPipe } from './Utils/lastFourDigits-pipe';
 import { CustomDatePipe } from './Utils/pipeCustomDate';
 import { TransformDataTablePipe } from './Utils/transform-data-table.pipe';
 import { TruncatePipe } from './Utils/truncate.pipe';
+import { CdkFixedSizeVirtualScroll, ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import { TruncatePipe } from './Utils/truncate.pipe';
     ComponentsModule
   ],
   providers: [
-    TransformDataTablePipe,
+    DatePipe,
     AmountFormatPipe,
     MatDialogService,
     TruncatePipe,
@@ -81,6 +82,7 @@ import { TruncatePipe } from './Utils/truncate.pipe';
     //IpDragScrollComponent,
     InnerLoaderComponent,
     ComponentsModule,
+    DatePipe
     //IpFiltersTableInvoicesComponent,
     //IpSelectInputComponent
   ],

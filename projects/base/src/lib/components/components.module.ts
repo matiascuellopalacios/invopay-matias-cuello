@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TranslateModule } from "@ngx-translate/core";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MaterialModule } from "../../shared/material/material.module";
 import { IpButtonModalComponent } from "./ip-button-modal/ip-button-modal.component";
 import { IpDateInputComponent } from "./ip-date-input/ip-date-input.component";

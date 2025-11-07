@@ -1,3 +1,5 @@
+import { OverlayModule } from '@angular/cdk/overlay';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -71,6 +73,8 @@ import { TagModule } from 'primeng/tag';
     MatChipsModule,
     CardModule,
     NgChartsModule,
+    OverlayModule,
+    ScrollingModule
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }
