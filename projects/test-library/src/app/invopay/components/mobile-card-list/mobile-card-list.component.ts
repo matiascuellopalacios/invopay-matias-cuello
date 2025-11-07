@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { CardConfig } from '../../interface/movile-table';
+import { CardConfig } from '../../../shared/models/movile-table';
 
 
 @Component({
@@ -20,9 +20,13 @@ export class MobileCardListComponent {
     this.showMenuForItem = this.showMenuForItem === item ? null : item;
   }
 
-  onCardAction(item: any): void {
+  onCardAction(item: any, action: string): void {
     this.showMenuForItem = null; 
-    this.cardAction.emit(item);
+    if (this.config?.actions && this.config.actions.length > 1) {
+      this.cardAction.emit({ item, action });
+    } else {
+      this.cardAction.emit(item);
+    }
   }
 }
 export { CardConfig };

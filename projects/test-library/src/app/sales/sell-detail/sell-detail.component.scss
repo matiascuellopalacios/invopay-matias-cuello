@@ -1,0 +1,343 @@
+@import "../../../../../base/src/shared/mixins/generalText.scss";
+@import "../../../../../base/src/shared/mixins/sizes.scss";
+@import "../../../../../base/src/shared/mixins/utils.scss";
+
+.sale-detail {
+  background: #F5F5F5;
+  width: 100%;
+  min-height: calc(100vh - 45px);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  &__container {
+    max-width: 2000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    gap: 15px;
+    margin-bottom: 0;
+    height: 70px;
+  }
+
+  &__back-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__title {
+    @include mainTitleText();
+    color: $primary-color;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__info-section {
+    width: 100%;
+  }
+
+  &__info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  &__info-card {
+    background: $app-white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__info-title {
+    @include subTitleText();
+    
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #E8E8E8;
+
+    svg {
+      width: 14px;
+      height: 18px;
+      fill: $primary-color;
+      padding-bottom: 2.3px;
+    }
+  }
+
+  &__info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 20px;
+
+    &--single {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+      .sale-detail__field {
+        max-width: 400px;
+      }
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 200px;
+  }
+
+  &__field-label {
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    background: $app-white;
+    padding: 0 6px;
+    font-size: 11px;
+    color: #000;
+    font-weight: 500;
+    z-index: 1;
+  }
+
+  &__field-input {
+    padding: 10px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: $primary-color-text;
+    background: #F8F9FA;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 11px;
+    outline: none;
+    
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+
+  &__info-value {
+    @include labelText();
+    font-size: 14px;
+    color: $primary-color-text;
+    font-weight: 500;
+  }
+
+  &__payment-section {
+    background: $app-white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__payment-title {
+    @include subTitleText();
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #E8E8E8;
+
+    svg {
+      width: 14px;
+      height: 18px;
+      fill: $primary-color;
+      padding-bottom: 2.3px;
+    }
+  }
+
+  &__table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    &--desktop {
+      display: block;
+    }
+  }
+
+  &__cards-container {
+    display: none;
+
+    &--mobile {
+      @include sm {
+        display: block;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  &__paginator-container {
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+  }
+
+  &__rows-per-page {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    span {
+      @include labelGeneralText();
+      color: $primary-color-text;
+      font-size: 14px;
+    }
+  }
+
+  &__rows-select {
+    @include generalInputText();
+    padding: 8px 12px;
+    border: $input-border;
+    border-radius: 6px;
+    color: $primary-color-text;
+    background: $input-bg-color;
+    cursor: pointer;
+    min-width: 70px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  &__paginator {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    ::ng-deep .ip-paginator {
+      padding: 0 !important;
+      height: auto !important;
+      align-items: center !important;
+    }
+  }
+
+  @include mmd {
+    padding: 15px;
+
+    &__info-row {
+      grid-template-columns: 1fr;
+    }
+
+    &__info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include sm {
+    padding: 10px;
+
+    &__header {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    &__info-card {
+      padding: 16px;
+      width: 100% !important;
+      max-width: 100% !important;
+      display: block;
+      margin: 0;
+    }
+
+    &__payment-section {
+      padding: 16px;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    &__table-wrapper--desktop {
+      display: none;
+    }
+
+    &__paginator-container {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+
+    &__rows-per-page {
+      justify-content: center;
+    }
+
+    &__paginator {
+      width: 100%;
+      justify-content: center;
+    }
+
+    &__info-row {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    &__info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+::ng-deep .sale-detail {
+  .table {
+    border-radius: 8px;
+    overflow: hidden;
+
+    &__header {
+      background: #F8F9FA;
+    }
+
+    &__body-row {
+      &:hover {
+        background: #F8F9FA;
+      }
+    }
+  }
+}

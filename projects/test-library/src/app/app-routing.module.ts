@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+
 import { BaseComponent } from 'base';
 import { IpLoginComponent } from './invopay/components/ip-login/ip-login.component';
 
+import { HomeComponent } from './invopay/views/home/home.component';
+
 const routes: Routes = [
+   {
+    path: 'home',
+    component: HomeComponent,
+  },
   {
     path: '',
     pathMatch: 'full',
@@ -18,19 +25,6 @@ const routes: Routes = [
     path: 'invopay',
     loadChildren: () =>
       import('./invopay/invopay.module').then((m) => m.InvopayModule),
-  },
-  {
-    path: 'library',
-    children: [
-      {
-        path: 'base',
-        component: BaseComponent,
-      },
-    ],
-  },
-  {
-    path: '**',
-    redirectTo: '',
   }
 ];
 

@@ -1362,6 +1362,37 @@
         "CANCEL": "Fechar",
         "CLEAR": "Limpar filtros"
       }
+    },
+    "NOTIFICATIONS":{
+      "TITLE": "Caixa de Notificações",
+      "MODAL": {
+        "TITLE": "Notificação"
+      },
+      "FILTERS": {
+        "TITLE": "Filtros",
+        "ANSWERED": "Estado respondido",
+        "ANSWERED_PLACEHOLDER": "Selecionar estado",
+        "YES": "Sim",
+        "NO": "Não",
+        "ENTITY": "Entidade",
+        "ENTITY_PLACEHOLDER": "Selecionar entidade",
+        "USER": "Usuário",
+        "USER_PLACEHOLDER": "Selecionar usuário"
+      },
+      "TABLE": {
+        "DATE": "Data",
+        "ENTITY": "Entidade",
+        "BROKER": "Corretor",
+        "USER": "Usuário",
+        "QUERY": "Consulta",
+        "ANSWERED": "Respondido"
+      },
+      "ENTITIES": {
+        "SETTLEMENT": "Liquidação",
+        "COMMISSION": "Comissão",
+        "INVOICE": "Fatura",
+        "PAYMENT": "Pagamento"
+      }
     }
   }
 }

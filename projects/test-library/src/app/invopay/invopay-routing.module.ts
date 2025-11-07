@@ -3,13 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { IpLoginComponent } from './components/ip-login/ip-login.component';
 import { AuthGuard } from './guards/auth.guard';
+
 import { MainLayoutComponent } from '../layout/main-layout/main-layout.component';
 import { HomeComponent } from './views/home/home.component';
-import { SellsListComponent } from './components/sells-list/sells-list.component';
-import { SellDetailComponent } from './components/sell-detail/sell-detail.component';
-import { RevenueListComponent } from './components/revenue-list/revenue-list.component';
-import { RevenueDetailComponent } from './components/revenue-detail/revenue-detail.component';
-import { PaymentsEntitiesListComponent } from './components/payments-entities-list/payments-entities-list.component';
+import { SellsListComponent } from '../sales/sells-list/sells-list.component';
+import { SellDetailComponent } from '../sales/sell-detail/sell-detail.component';
+import { RevenueListComponent } from '../revenues/revenue-list/revenue-list.component';
+import { RevenueDetailComponent } from '../revenues/revenue-detail/revenue-detail.component';
+import { PaymentsEntitiesListComponent } from '../payments/payments-entities-list/payments-entities-list.component';
+import { InsuranceNotificationTrayComponent } from '../notifications/insurance/insurance-notification-tray/insurance-notification-tray.component';
+import { BrokerNotificationTrayComponent } from '../notifications/brokers/broker-notification-tray/broker-notification-tray.component';
+
+import { Template1Component } from './views/template1/template1.component';
+
 
 const routes: Routes = [
   {
@@ -45,6 +51,14 @@ const routes: Routes = [
       {
         path: 'payments-entities',
         component: PaymentsEntitiesListComponent
+      },
+      {
+        path: 'insurance-notification-tray',
+        component: InsuranceNotificationTrayComponent
+      },
+      {
+        path: 'broker-notification-tray',
+        component: BrokerNotificationTrayComponent
       }
     ]
   },
@@ -57,7 +71,11 @@ const routes: Routes = [
     path: 'login-broker',
     component: IpLoginComponent,
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: 'revenues',
+    component: Template1Component
+  },
 ];
 
 @NgModule({

@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
     this.ipProfileService.getUserProfile().subscribe({
       next: (profile) => {
         this.userProfile = profile;
+        sessionStorage.setItem('userId', JSON.stringify(profile.id));
       }
     });
   }

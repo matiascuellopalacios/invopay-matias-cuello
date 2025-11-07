@@ -1531,7 +1531,12 @@
           "TITLE": "Cobranza",
           "PENDING_PAYMENTS": "Pagos pendientes"
         },
-        "ALL_INVOICES": "Facturas"
+        "ALL_INVOICES": "Facturas",
+        "NOTIFICATIONS": "Notificaciones",
+        "NOTIFICATIONS_OPTIONS": {
+          "INSURANCE": "Seguros",
+          "BROKER": "Broker"
+        }
       }
     },
     "CONSOLIDATED": {
@@ -1682,6 +1687,7 @@
       "INACTIVE": "Inactivo",
       "ACTIVE2": "Activa",
       "INACTIVE2": "Inactiva",
+      "ACTIONS": "Acciones",
       "DASHBOARD": {
         "ACTIONS": "ACCIONES",
         "AMOUNT": "MONTO",
@@ -2508,18 +2514,76 @@
         "PRODUCT":"Producto"
       }
     },
+    "NOTIFICATIONS": {
+      "TITLE": "Notificaciones",
+      "FILTERS": {
+        "TITLE": "Filtros",
+        "ANSWERED": "Leido",
+        "ANSWERED_PLACEHOLDER": "Seleccionar estado",
+        "YES": "Sí",
+        "NO": "No",
+        "ENTITY": "Entidad",
+        "ENTITY_PLACEHOLDER": "Seleccionar entidad",
+        "USER": "Usuario",
+        "USER_PLACEHOLDER": "Usuario"
+      },
+      "ENTITIES": {
+        "SETTLEMENT": "Liquidación",
+        "COMMISSION": "Comisión",
+        "INVOICE": "Factura",
+        "PAYMENT": "Pago"
+      },
+      "USERS": {
+        "JUAN_PEREZ": "Juan Pérez",
+        "MARIA_RODRIGUEZ": "María Rodríguez",
+        "CARLOS_LOPEZ": "Carlos López"
+      },
+      "TABLE": {
+        "DATE": "Fecha/Hora",
+        "ENTITY": "Entidad",
+        "BROKER": "Corredor/Proveedor",
+        "USER": "Nombre de usuario",
+        "QUERY": "Consulta",
+        "ANSWERED": "Leido",
+        "ACTIONS": "Acciones"
+      },
+      "MODAL": {
+        "TITLE": "Ver Notificación",
+        "TITTLE": "Filtros adicionales",
+        "CLEAR": "Limpiar",
+        "CANCEL": "Cancelar",
+        "APPLY": "Aplicar",
+        "REPLY": "Responder",
+        "REPLY_PLACEHOLDER": "Escribe tu respuesta aquí...",
+        "PREVIOUS_RESPONSES": "Respuestas anteriores",
+        "RESPONDED_BY": "Respondida por",
+        "SUBMIT": "Enviar"
+      }
+    },
     "PAYMENTS_ENTITIES":{
-      "TITTLE":"Proveedores y Canales de recaudación",
-      "TABLE":{
-        "LOGO":"Logo",
-        "PROVIDEER":"Proveedor",
-        "PAYMENT_CHANNEL":"Canales",
-        "ACTIVE":"Activo",
-        "DESCRIPTION":"Descripción",
-        "DETAIL":"Detalle",
-        "YES":"Sí",
-        "NO":"No"
+    "TITTLE":"Proveedores y Canales de recaudación",
+    "TABLE":{
+      "LOGO":"Logo",
+      "PROVIDEER":"Proveedor",
+      "PAYMENT_CHANNEL":"Canales",
+      "ACTIVE":"Activo",
+      "DESCRIPTION":"Descripción",
+      "DETAIL":"Detalle",
+      "YES":"Sí",
+      "NO":"No"},
+    "REVENUES": {
+      "TITLE": "Recaudaciones",
+      "TABLE": {
+        "REVENUEDATE": "Fecha",
+        "REVENUEAMOUNT": "Monto",
+        "PAYMENTCHANNEL": "Canal de pago",
+        "POLICYNUMBER": "Número de póliza",
+        "PRODUCTNAME": "Producto",
+        "PREMIUMAMOUNT": "Monto prima",
+        "BROKERNAME": "Agente de ventas"
+
       }
     }
+  }
   }
 }

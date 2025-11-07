@@ -49,6 +49,7 @@ export class IpAuthService {
       sessionStorage.setItem('access_token', resp.access_token);
       sessionStorage.setItem('username', resp.username);
       sessionStorage.setItem('userType', resp.userType);
+      sessionStorage.setItem('userId', JSON.stringify(resp.id));
       if (resp.supplierSignInReponse) {
         sessionStorage.setItem('isBroker', resp.supplierSignInReponse.isBroker);
       }

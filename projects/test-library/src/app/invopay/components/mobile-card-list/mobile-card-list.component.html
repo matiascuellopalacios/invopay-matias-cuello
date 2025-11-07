@@ -1,4 +1,4 @@
-<div class="mobile-card-list">
+<div class="mobile-card-list" *ngIf="config">
   <div class="mobile-card-list__item" *ngFor="let item of data">
     <div class="mobile-card-list__header">
       <div class="mobile-card-list__header-content">
@@ -18,8 +18,9 @@
         <div class="mobile-card-list__dropdown" *ngIf="showMenuForItem === item">
           <button 
             class="mobile-card-list__dropdown-item"
-            (click)="onCardAction(item)">
-            {{ 'IP.ACTIONS_TOOLTIP.SEARCH' | translate }}
+            *ngFor="let action of config?.actions || ['search']"
+            (click)="onCardAction(item, action)">
+            {{ 'IP.ACTIONS_TOOLTIP.' + action.toUpperCase() | translate }}
           </button>
         </div>
       </div>
